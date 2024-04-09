@@ -181,39 +181,6 @@ function delayCall() {
   })();
 }
 
-// 儲存資料
-async function saveData(key, data) {
-  try {
-    const obj = {};
-    obj[key] = data;
-    await browser.storage.local.set(obj);
-    console.log(key + " ... save");
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-// 讀取資料
-async function loadData(key, defaultValue) {
-  try {
-    const result = await browser.storage.local.get(key);
-    const data = result[key];
-
-    if (data === undefined) {
-      if (defaultValue === undefined) {
-        return "";
-      } else {
-        return defaultValue;
-      }
-    }
-
-    return data;
-  } catch (error) {
-    console.log(error);
-    return "";
-  }
-}
-
 // Run app
 mainApp();
 

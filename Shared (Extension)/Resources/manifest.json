@@ -22,10 +22,10 @@
   "content_scripts": [
     {
       "js": [
-        "loadingBase64.js",
-        "Readability.js",
-        "chatgpt-api.js",
-        "marked.min.js",
+        "contentLoadingGIF.js",
+        "contentReadability.js",
+        "contentGPT.js",
+        "contentMarked.js",
         "content.js"
       ],
       "css": ["readability.css"],

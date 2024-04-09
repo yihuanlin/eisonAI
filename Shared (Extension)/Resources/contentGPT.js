@@ -263,15 +263,6 @@ function setupSummary() {
   );
 }
 
-function postProcessText(text) {
-  return text
-    .trim()
-    .replaceAll("  ", "")
-    .replaceAll("\t", "")
-    .replaceAll("\n\n", "")
-    .replaceAll(",,", "");
-}
-
 function removeBR(text) {
   return text.trim().replaceAll("<br>", "");
 }
@@ -338,5 +329,47 @@ function removeReadabilityReplies() {
 
   while (elements.length > 0) {
     elements[0].parentNode.removeChild(elements[0]);
+  }
+}
+
+function postProcessText(text) {
+  return text
+    .trim()
+    .replaceAll("  ", "")
+    .replaceAll("\t", "")
+    .replaceAll("\n\n", "")
+    .replaceAll(",,", "");
+}
+
+// 儲存資料
+async function saveData(key, data) {
+  try {
+    const obj = {};
+    obj[key] = data;
+    await browser.storage.local.set(obj);
+    console.log(key + " ... save");
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// 讀取資料
+async function loadData(key, defaultValue) {
+  try {
+    const result = await browser.storage.local.get(key);
+    const data = result[key];
+
+    if (data === undefined) {
+      if (defaultValue === undefined) {
+        return "";
+      } else {
+        return defaultValue;
+      }
+    }
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    return "";
   }
 }
