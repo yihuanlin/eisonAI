@@ -1,10 +1,10 @@
 {
     "extension_name": {
-        "message": "eisonAI",
+        "message": "Eison’s AI Safari extension",
         "description": "The display name for the extension."
     },
     "extension_description": {
-        "message": "This is eisonAI. You should tell us what your extension does here.",
+        "message": "This is Eison’s AI.",
         "description": "Description of what the extension does."
     }
 }

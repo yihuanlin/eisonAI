@@ -1,0 +1,531 @@
+@charset "UTF-8";
+
+#ReadabilityBoxFrame {
+  z-index: 90000;
+
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+
+  display: none;
+
+  height: 100vh;
+
+  animation: slideIn 0.8s;
+
+  width: 100vw;
+  justify-content: center;
+}
+
+.readabilityBlurBox {
+  -webkit-mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 1),
+    rgba(0, 0, 0, 1)
+  );
+  mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 1),
+    rgba(0, 0, 0, 1)
+  );
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 80px;
+  z-index: 90001;
+}
+
+.readabilityBlurBackgroundBox {
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 89001;
+}
+
+@media only screen and (max-width: 767px) {
+  .readabilityBlurBox {
+    height: 160px;
+  }
+}
+
+#ReadabilityBox {
+  z-index: 90000;
+
+  position: relative;
+  max-width: 460px;
+  width: 100vw;
+  bottom: 0px;
+
+  margin-top: auto;
+  margin-bottom: -32px;
+
+  display: flex;
+  flex-direction: column-reverse;
+
+  padding: 32px;
+  max-height: calc(100vh - 32px);
+
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#ReadabilityAnchor {
+  overflow-anchor: auto;
+  height: 1px;
+}
+
+#ReadabilityBox::-webkit-scrollbar {
+  width: 0.1rem;
+  /* 设置滚动条宽度为 0.1rem */
+  background-color: transparent;
+  /* 设置滚动条背景颜色为透明 */
+}
+
+.ReadabilityFont {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Symbol", "Segoe UI Emoji",
+    "Noto Color Emoji", sans-serif !important;
+}
+
+.ReadabilityStyle {
+  padding: 8px;
+  border-radius: 12px;
+  background: linear-gradient(
+    180deg,
+    rgba(244, 245, 244, 0.98) 0%,
+    rgba(255, 255, 255, 0.98) 100%
+  );
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.12);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  margin-bottom: 10px;
+
+  gap: 8px;
+}
+
+.readabilityDone {
+  animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.03, 0.515, 0.955) both !important;
+}
+
+.readabilityReply {
+  font-style: normal;
+  text-align: left;
+  color: #444;
+
+  font-size: 13px;
+  line-height: 24px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  animation: fadeIn 0.8s;
+
+  white-space: pre-line;
+
+  flex-direction: column;
+}
+
+.morePadding {
+  padding: 16px !important;
+}
+
+.readabilityUserReply {
+  text-align: right !important;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+#ReadabilityBox hr {
+  background: none;
+  color: none;
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 0;
+  padding: 0;
+  margin: 8px 0;
+  display: block !important;
+}
+
+.readabilityInput {
+  display: flex;
+  justify-content: left;
+  align-items: left;
+
+  gap: 8px;
+}
+
+.fixMorePadding {
+  margin: -8px;
+}
+
+#ReadabilityKeyboard {
+  color: #000 !important;
+}
+
+#ReadabilityKeyboard textarea {
+  border: none !important;
+  width: 100% !important;
+  resize: none !important;
+  overflow: hidden !important;
+  min-height: 1em !important;
+  max-height: 100px !important;
+  display: inline-block !important;
+  font-size: 16px !important;
+  color: #000 !important;
+  font-weight: 200 !important;
+  margin: 0 !important;
+}
+
+.readabilityInsideStyle {
+  background: #ebebeb !important;
+  border-radius: 8px !important;
+  padding: 12px !important;
+  box-shadow: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.readabilityTips {
+  color: #4b4b4b !important;
+  opacity: 0.7 !important;
+}
+
+#response,
+#receipt,
+#receiptTitle {
+  font-style: normal;
+  text-align: left;
+  color: #444;
+  white-space: pre-line;
+  margin: 0;
+  padding: 0;
+
+  font-size: 14px;
+  line-height: 26px;
+  display: flex;
+}
+
+#receiptTitle {
+  font-weight: bolder;
+  white-space: normal;
+  margin-bottom: 1em;
+}
+
+#ReadabilityBox p {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+  word-wrap: break-word;
+}
+
+.safariExtensionTitle,
+.safariExtensionHost {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: left;
+  font-weight: 700;
+  color: #000000;
+}
+
+.safariExtensionHost {
+  font-weight: 400;
+}
+
+#ReadabilityLoading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 16px;
+  margin-bottom: 1em;
+}
+
+#ReadabilityLoading span {
+  padding-top: 6px;
+  font-size: 10px;
+  color: #000;
+}
+
+#receipt h1,
+#receipt h2,
+#receipt h3,
+#receipt h4,
+#receipt h5,
+#receipt strong {
+  font-weight: bolder;
+  margin: 0;
+  padding: 0;
+}
+
+#receipt ol,
+#receipt ul {
+  list-style: disc;
+  list-style-position: inside;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  margin-block: 0;
+  padding-block: 0;
+  padding-inline: 0;
+}
+
+#receipt li {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  margin-block: 0;
+  padding-block: 0;
+  padding-inline: 0;
+}
+
+/* ReadabilityBar */
+
+#ReadabilityBar {
+  display: block;
+  z-index: 90002;
+  animation: fadeIndn 0.8s;
+}
+
+#ReadabilityBar #viewBar {
+  margin: 0;
+  padding: 0;
+
+  background: rgba(244, 245, 244, 0.85);
+  box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.12);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+
+  position: fixed;
+
+  border-radius: 0px 16px 16px 0px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 90003;
+  width: 40px !important;
+  height: 40px !important;
+  left: 0px;
+  bottom: 26px;
+}
+
+#ReadabilityBar #viewBar a {
+  text-align: center;
+
+  font-family: system-ui;
+  font-style: normal;
+  font-weight: 590;
+  font-size: 16px;
+
+  color: rgba(0, 0, 0, 0.75);
+  text-decoration: none;
+
+  line-height: 1px;
+  border: none;
+  width: 20px !important;
+  height: 18px !important;
+}
+
+.readabilityReply code {
+  display: block;
+  background-color: rgba(120, 120, 120, 0.15);
+  padding: 1em;
+  word-break: keep-all;
+  white-space: pre-wrap;
+  border-radius: 6px;
+  margin: 6px 0;
+}
+
+#ReadabilityMessageButtons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 10px;
+
+  flex: none;
+  order: 2;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.readabilityMessageButton {
+  padding: 12px 16px;
+  cursor: pointer;
+}
+
+@keyframes dotFlashingAnimation {
+  0% {
+    content: ".";
+  }
+  50% {
+    content: "..";
+  }
+  100% {
+    content: "...";
+  }
+}
+
+.ReadabilityMessageTyping::after {
+  display: inline;
+  content: "...";
+  animation: dotFlashingAnimation 1s infinite;
+}
+
+/* animation */
+
+@keyframes blink {
+  50% {
+    color: transparent;
+  }
+}
+.readability__loader__dot {
+  animation: 1s blink infinite;
+}
+.readability__loader__dot:nth-child(2) {
+  animation-delay: 250ms;
+}
+.readability__loader__dot:nth-child(3) {
+  animation-delay: 500ms;
+}
+
+.fadeIn {
+  animation: fadeIn 0.8s;
+}
+
+.fadeOut {
+  animation: fadeOut 0.8s;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    display: flex !important;
+  }
+
+  99% {
+    opacity: 0;
+  }
+
+  100% {
+    display: none !important;
+    opacity: 0;
+  }
+}
+
+.fadeOut {
+  animation: fadeOut 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    display: none !important;
+  }
+
+  1% {
+    display: flex !important;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    bottom: -200px;
+    display: none !important;
+  }
+
+  1% {
+    display: block !important;
+  }
+
+  100% {
+    opacity: 1;
+    bottom: 0px;
+  }
+}
+
+@keyframes shake-horizontal {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70% {
+    transform: translateX(-5px);
+  }
+
+  20%,
+  40%,
+  60% {
+    transform: translateX(5px);
+  }
+
+  80% {
+    transform: translateX(3px);
+  }
+
+  90% {
+    transform: translateX(-3px);
+  }
+}
+
+/* @media */
+
+@media (prefers-color-scheme: dark) {
+  #ReadabilityBar #viewBar {
+    background-color: #000 !important;
+  }
+
+  .ReadabilityStyle {
+    background: linear-gradient(
+      180deg,
+      rgba(10, 10, 10, 0.95) 0%,
+      rgba(10, 10, 10, 0.95) 100%
+    ) !important;
+
+    color: #fff !important;
+  }
+
+  .safariExtensionTitle,
+  .safariExtensionHost,
+  #response,
+  #receipt,
+  #receiptTitle,
+  #ReadabilityLoading span {
+    color: #fff !important;
+  }
+
+  #ReadabilityKeyboard textarea,
+  .readabilityInsideStyle {
+    background-color: #333333 !important;
+    color: #fff !important;
+  }
+
+  #ReadabilityBoxFrame svg {
+    color: #fff !important;
+  }
+}

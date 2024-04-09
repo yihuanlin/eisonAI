@@ -45,6 +45,20 @@
 		EA77267D2BC5B6B3005A194D /* popup.css in Resources */ = {isa = PBXBuildFile; fileRef = EA77262D2BC5B6B3005A194D /* popup.css */; };
 		EA77267E2BC5B6B3005A194D /* popup.js in Resources */ = {isa = PBXBuildFile; fileRef = EA77262E2BC5B6B3005A194D /* popup.js */; };
 		EA77267F2BC5B6B3005A194D /* popup.js in Resources */ = {isa = PBXBuildFile; fileRef = EA77262E2BC5B6B3005A194D /* popup.js */; };
+		EA7726912BC5B701005A194D /* chatgpt-api.js in Resources */ = {isa = PBXBuildFile; fileRef = EA7726902BC5B701005A194D /* chatgpt-api.js */; };
+		EA7726922BC5B701005A194D /* chatgpt-api.js in Resources */ = {isa = PBXBuildFile; fileRef = EA7726902BC5B701005A194D /* chatgpt-api.js */; };
+		EA7726942BC5B709005A194D /* loadingBase64.js in Resources */ = {isa = PBXBuildFile; fileRef = EA7726932BC5B709005A194D /* loadingBase64.js */; };
+		EA7726952BC5B709005A194D /* loadingBase64.js in Resources */ = {isa = PBXBuildFile; fileRef = EA7726932BC5B709005A194D /* loadingBase64.js */; };
+		EA7726972BC5B711005A194D /* marked.min.js in Resources */ = {isa = PBXBuildFile; fileRef = EA7726962BC5B711005A194D /* marked.min.js */; };
+		EA7726982BC5B711005A194D /* marked.min.js in Resources */ = {isa = PBXBuildFile; fileRef = EA7726962BC5B711005A194D /* marked.min.js */; };
+		EA77269D2BC5B71D005A194D /* Readability.js in Resources */ = {isa = PBXBuildFile; fileRef = EA7726992BC5B71D005A194D /* Readability.js */; };
+		EA77269E2BC5B71D005A194D /* Readability.js in Resources */ = {isa = PBXBuildFile; fileRef = EA7726992BC5B71D005A194D /* Readability.js */; };
+		EA77269F2BC5B71D005A194D /* settings.html in Resources */ = {isa = PBXBuildFile; fileRef = EA77269A2BC5B71D005A194D /* settings.html */; };
+		EA7726A02BC5B71D005A194D /* settings.html in Resources */ = {isa = PBXBuildFile; fileRef = EA77269A2BC5B71D005A194D /* settings.html */; };
+		EA7726A12BC5B71D005A194D /* settings.js in Resources */ = {isa = PBXBuildFile; fileRef = EA77269B2BC5B71D005A194D /* settings.js */; };
+		EA7726A22BC5B71D005A194D /* settings.js in Resources */ = {isa = PBXBuildFile; fileRef = EA77269B2BC5B71D005A194D /* settings.js */; };
+		EA7726A32BC5B71D005A194D /* readability.css in Resources */ = {isa = PBXBuildFile; fileRef = EA77269C2BC5B71D005A194D /* readability.css */; };
+		EA7726A42BC5B71D005A194D /* readability.css in Resources */ = {isa = PBXBuildFile; fileRef = EA77269C2BC5B71D005A194D /* readability.css */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -120,6 +134,13 @@
 		EA77265B2BC5B6B3005A194D /* eisonAI Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "eisonAI Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA7726602BC5B6B3005A194D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA7726612BC5B6B3005A194D /* eisonAI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = eisonAI.entitlements; sourceTree = "<group>"; };
+		EA7726902BC5B701005A194D /* chatgpt-api.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "chatgpt-api.js"; sourceTree = "<group>"; };
+		EA7726932BC5B709005A194D /* loadingBase64.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = loadingBase64.js; sourceTree = "<group>"; };
+		EA7726962BC5B711005A194D /* marked.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = marked.min.js; sourceTree = "<group>"; };
+		EA7726992BC5B71D005A194D /* Readability.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Readability.js; sourceTree = "<group>"; };
+		EA77269A2BC5B71D005A194D /* settings.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = settings.html; sourceTree = "<group>"; };
+		EA77269B2BC5B71D005A194D /* settings.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = settings.js; sourceTree = "<group>"; };
+		EA77269C2BC5B71D005A194D /* readability.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = readability.css; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,9 +224,16 @@
 				EA7726272BC5B6B3005A194D /* _locales */,
 				EA7726282BC5B6B3005A194D /* images */,
 				EA7726292BC5B6B3005A194D /* manifest.json */,
+				EA7726932BC5B709005A194D /* loadingBase64.js */,
+				EA7726902BC5B701005A194D /* chatgpt-api.js */,
 				EA77262A2BC5B6B3005A194D /* background.js */,
+				EA7726962BC5B711005A194D /* marked.min.js */,
 				EA77262B2BC5B6B3005A194D /* content.js */,
 				EA77262C2BC5B6B3005A194D /* popup.html */,
+				EA77269C2BC5B71D005A194D /* readability.css */,
+				EA7726992BC5B71D005A194D /* Readability.js */,
+				EA77269A2BC5B71D005A194D /* settings.html */,
+				EA77269B2BC5B71D005A194D /* settings.js */,
 				EA77262D2BC5B6B3005A194D /* popup.css */,
 				EA77262E2BC5B6B3005A194D /* popup.js */,
 			);
@@ -414,14 +442,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA77269F2BC5B71D005A194D /* settings.html in Resources */,
 				EA7726762BC5B6B3005A194D /* background.js in Resources */,
+				EA7726912BC5B701005A194D /* chatgpt-api.js in Resources */,
+				EA7726972BC5B711005A194D /* marked.min.js in Resources */,
+				EA7726A32BC5B71D005A194D /* readability.css in Resources */,
+				EA7726942BC5B709005A194D /* loadingBase64.js in Resources */,
 				EA77267C2BC5B6B3005A194D /* popup.css in Resources */,
 				EA77267A2BC5B6B3005A194D /* popup.html in Resources */,
 				EA7726722BC5B6B3005A194D /* images in Resources */,
+				EA77269D2BC5B71D005A194D /* Readability.js in Resources */,
 				EA7726742BC5B6B3005A194D /* manifest.json in Resources */,
 				EA7726702BC5B6B3005A194D /* _locales in Resources */,
 				EA7726782BC5B6B3005A194D /* content.js in Resources */,
 				EA77267E2BC5B6B3005A194D /* popup.js in Resources */,
+				EA7726A12BC5B71D005A194D /* settings.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,14 +464,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA7726A02BC5B71D005A194D /* settings.html in Resources */,
 				EA7726772BC5B6B3005A194D /* background.js in Resources */,
+				EA7726922BC5B701005A194D /* chatgpt-api.js in Resources */,
+				EA7726982BC5B711005A194D /* marked.min.js in Resources */,
+				EA7726A42BC5B71D005A194D /* readability.css in Resources */,
+				EA7726952BC5B709005A194D /* loadingBase64.js in Resources */,
 				EA77267D2BC5B6B3005A194D /* popup.css in Resources */,
 				EA77267B2BC5B6B3005A194D /* popup.html in Resources */,
 				EA7726732BC5B6B3005A194D /* images in Resources */,
+				EA77269E2BC5B71D005A194D /* Readability.js in Resources */,
 				EA7726752BC5B6B3005A194D /* manifest.json in Resources */,
 				EA7726712BC5B6B3005A194D /* _locales in Resources */,
 				EA7726792BC5B6B3005A194D /* content.js in Resources */,
 				EA77267F2BC5B6B3005A194D /* popup.js in Resources */,
+				EA7726A22BC5B71D005A194D /* settings.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
