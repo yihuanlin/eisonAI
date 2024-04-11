@@ -12,6 +12,14 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
     });
   }
 
+  if (request == "setMode") {
+    ReadabilityBarMode();
+
+    sendResponse({
+      callback: "setMode-ok",
+    });
+  }
+
   if (request == "getDebugText") {
     getDebugText();
 
@@ -63,7 +71,7 @@ function insertHtml() {
   }
 
   var htmlReadabilityBarCode = `
-  <div id="ReadabilityBar">
+  <div id="ReadabilityBar" >
   <div id="viewBar">
       <a href="javascript:void(0)" id="ReadabilityButton">
       <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -194,6 +202,20 @@ function insertHtml() {
       sendReply();
     }
   });
+}
+
+function ReadabilityBarMode() {
+  (async () => {
+    let mode = await loadData("AppMODE", "modeMiniIcon");
+
+    if (mode == "modeMiniIcon") {
+      showID("ReadabilityBar");
+    }
+
+    if (mode == "modeHidden") {
+      hideID("ReadabilityBar");
+    }
+  })();
 }
 
 function reanswer() {

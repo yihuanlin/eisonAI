@@ -67,10 +67,8 @@ function sendRunSummaryMessage() {
 
 function selectMode(modeName) {
   console.log("select", modeName);
-}
-
-function openSettings() {
-  console.log("openSettings");
+  saveData("AppMODE", modeName);
+  sendMessageToContent("setMode");
 }
 
 function getHostFromUrl(url) {
@@ -120,6 +118,18 @@ function setupButtonBarActions() {
       toggleArea(id);
     });
   });
+}
+
+async function setupMode() {
+  let mode = await loadData("AppMODE", "modeMiniIcon");
+
+  if (mode == "modeMiniIcon") {
+    document.getElementById("ModeMiniIconBox").classList.add("selected");
+  }
+
+  if (mode == "modeHidden") {
+    document.getElementById("ModeHiddenBox").classList.add("selected");
+  }
 }
 
 function toggleArea(id) {
@@ -188,6 +198,10 @@ function mainApp() {
   setupButtonBarActions();
   addClickListeners();
 
+  //
+
+  setPlatformClassToBody();
+
   //runtime only
   addMessageListener();
   setupSettingsLink();
@@ -202,6 +216,9 @@ function delayCall() {
     document.querySelector("#currentHOST").innerHTML = getHostFromUrl(
       currentTabs[0].url
     );
+
+    //
+    await setupMode();
   })();
 }
 
@@ -213,6 +230,27 @@ function setStatus(className) {
   icon.classList.remove("error");
 
   icon.classList.add(className);
+}
+
+function setPlatformClassToBody() {
+  // 判斷用戶平台並添加相應的 class
+  if (isIOS()) {
+    document.body.classList.add("ios");
+  } else if (isMacOS()) {
+    document.body.classList.add("macos");
+  } else {
+    document.body.classList.add("other-platform");
+  }
+}
+
+// 判斷是否在 iOS 上運行
+function isIOS() {
+  return /iPhone|iPad|iPod/i.test(navigator.platform);
+}
+
+// 判斷是否在 macOS 上運行
+function isMacOS() {
+  return /MacIntel/i.test(navigator.platform);
 }
 
 // Run app
