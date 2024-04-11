@@ -163,7 +163,7 @@ function setupStatus() {
     let apiURL = await loadData("APIURL", "");
     let apiKey = await loadData("APIKEY", "");
 
-    let newURL = apiURL.replace("v1/chat/completions", "v1/models");
+    let newURL = `${apiURL}/models`;
 
     let bool = await setupGPT();
     if (bool) {

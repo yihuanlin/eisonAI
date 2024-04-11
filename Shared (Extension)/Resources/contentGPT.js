@@ -180,7 +180,9 @@ async function apiPostMessage(
   try {
     hideID("ReadabilityErrorResend");
 
-    const response = await fetch(appAPIUrl, {
+    let fetchURL = `${appAPIUrl}/chat/completions`;
+
+    const response = await fetch(fetchURL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -324,15 +326,18 @@ function hideLoading() {
 }
 
 function hideID(idName) {
-  document.querySelector("#" + idName).style.display = "none";
+  try {
+    document.querySelector("#" + idName).style.display = "none";
+  } catch (error) {}
 }
 
 function showID(idName, display) {
   if (display === undefined) {
     display = "block";
   }
-
-  document.querySelector("#" + idName).style.display = display;
+  try {
+    document.querySelector("#" + idName).style.display = display;
+  } catch (error) {}
 }
 
 function uiFocus(responseElem, delayMS) {

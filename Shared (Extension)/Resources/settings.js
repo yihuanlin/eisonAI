@@ -92,13 +92,12 @@ function checkAPI() {
       return;
     }
 
-    if (!API_URL.endsWith("v1/chat/completions")) {
-      callbackText.innerText =
-        "Complete structure required. eg. https://example.com/v1/chat/completions";
+    if (!API_URL.endsWith("/v1")) {
+      callbackText.innerText = "Structure required. eg. https://example.com/v1";
       return;
     }
 
-    if (API_URL == "https://example.com/v1/chat/completions") {
+    if (API_URL == "https://example.com/v1") {
       callbackText.innerText = "example.com is just an example.";
       return;
     }
