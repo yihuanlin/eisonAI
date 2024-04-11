@@ -43,6 +43,16 @@ async function sendReplytext(text) {
   });
 }
 
+function resend() {
+  (async () => {
+    let elem = getMaxTimestampElem();
+
+    await apiPostMessage(elem, function () {
+      markdownMessage(elem);
+    });
+  })();
+}
+
 function getMaxTimestampElem() {
   var elements = document.querySelectorAll('[id^="ReplyMessage"]');
   var maxTimestamp = -Infinity;
@@ -163,14 +173,12 @@ async function apiPostMessage(
     appAPIModel = API_MODEL;
   }
 
-  console.log(appAPIUrl, appAPIKey);
-
   lastReplyMessage = ""; //reset LastMessage
 
   toggleClass(responseElem, "ReadabilityMessageTyping");
 
   try {
-    let errorResponse = "";
+    hideID("ReadabilityErrorResend");
 
     const response = await fetch(appAPIUrl, {
       method: "POST",
@@ -182,7 +190,7 @@ async function apiPostMessage(
         stream: true,
         model: appAPIModel,
         messages: messagesGroup,
-        temperature: 0,
+        temperature: 0.1,
       }),
     });
 
@@ -209,7 +217,9 @@ async function apiPostMessage(
         if (!data.startsWith("data")) {
           try {
             let errorJSON = JSON.parse(data);
-            typeSentence("Error: " + errorJSON.error.message, responseElem);
+            typeSentence("\nError: " + errorJSON.error.message, responseElem);
+
+            showID("ReadabilityErrorResend", "flex");
             return;
           } catch (error) {}
         }
@@ -317,8 +327,12 @@ function hideID(idName) {
   document.querySelector("#" + idName).style.display = "none";
 }
 
-function showID(idName) {
-  document.querySelector("#" + idName).style.display = "block";
+function showID(idName, display) {
+  if (display === undefined) {
+    display = "block";
+  }
+
+  document.querySelector("#" + idName).style.display = display;
 }
 
 function uiFocus(responseElem, delayMS) {

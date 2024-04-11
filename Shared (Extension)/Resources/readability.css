@@ -18,6 +18,10 @@
   justify-content: center;
 }
 
+.readabilityCursorPointer {
+  cursor: pointer;
+}
+
 .readabilityBlurBox {
   -webkit-mask-image: linear-gradient(
     to top,
@@ -169,6 +173,10 @@
   color: #000 !important;
 }
 
+#ReadabilityTextarea {
+  flex: 1;
+}
+
 #ReadabilityKeyboard textarea {
   border: none !important;
   width: 100% !important;
@@ -191,6 +199,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.readabilityInsideStyle.readabilityError {
+  background-color: #d10000 !important;
+  color: #fff;
 }
 
 .readabilityTips {

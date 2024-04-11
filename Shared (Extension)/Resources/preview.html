@@ -39,7 +39,7 @@
         <div id="ReadabilityBox" class="ReadabilityFont" style="display: flex">
             <div id="ReadabilityKeyboard" class="ReadabilityStyle morePadding">
                 <div class="readabilityInput fixMorePadding">
-                    <textarea id="ReadabilityTextarea" placeholder="Reply(Enter for Send)" rows="1" cols="1"
+                    <textarea id="ReadabilityTextarea" placeholder="Reply (Enter for Send)" rows="1" cols="1"
                         class="readabilityInsideStyle"></textarea>
                     <div id="ReadabilityClose" class="readabilityInsideStyle">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -57,6 +57,18 @@
                             <path d="M10 14 21 3"></path>
                             <path d="m21 3-6.5 18a.55.55 0 0 1-1 0L10 14l-7-3.5a.55.55 0 0 1 0-1L21 3Z"></path>
                         </svg>
+                    </div>
+
+                    <div id="ReadabilityErrorResend" class="readabilityInsideStyle readabilityError">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-width="3" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z"></path>
+                            <path d="M12 8h.01"></path>
+                            <path d="M11 12h1v4h1"></path>
+                        </svg>
+
+                        <span>Retry</span>
                     </div>
                 </div>
             </div>
@@ -82,11 +94,7 @@
                             height="48" width="48" alt="loading" style="width: 48px; height: 48px" />
                         <span>Eison · 愛省流君</span>
                     </div>
-                    <div id="response" class="typing">
-
-
-
-                    </div>
+                    <div id="response" class="typing"></div>
                     <div id="receiptTitle">
                         一個用Go語言和gocui庫編寫的簡單終端UI，可用於docker和docker-compose。
                     </div>
@@ -112,19 +120,20 @@
                 </div>
                 <!-- ReadabilityMessageButtons / End -->
 
-                <div id="ReplyMessage1712583180066"
-                    class="ReadabilityStyle morePadding readabilityReply readabilityUserReply">
-                    把 Mac 的安裝命令寫出來。
+                <div id="ReplyMessage1712800698500" class="ReadabilityStyle morePadding readabilityReply">
+                    為了提供更詳細的介紹，我將分成幾個部分來描述這個產品。<br /><br />**Redfeed
+                    锐读：智能个人信息助手**<br /><br />Redfeed
+                    锐读是一個智能个人信息助手，旨在提供定制化的信息订阅、智能过滤、AI
+                    解读等服務，針對那些對信息输入效率和質量有高要求的少數人群。這個產品的特色在於它的智能過濾功能，可以根據用戶的偏好和需求，自動過濾掉不感興趣的信息，讓用戶能夠專注於他們感興趣的內容。<br /><br />**產品功能**<br /><br />Redfeed
+                    锐读提供了多種功能，包括一鍵訂閱公眾號、智能過濾、AI
+                    解讀等。用戶可以通過網站或微信小程序訪問，並且可以添加企業微信小助手，以便更方便地使用服務。另外，產品還計劃搭建
+                    web 端，支持關鍵詞訂閱，並搞浏覽器插件、支持 RSS，以滿足不同用戶<br />
+                    <span style="color: red;">
+                        Error:
+                        An error happened, please make sure your request is SFW, or use a
+                        jailbreak to bypass the filter.
+                    </span>
                 </div>
-
-                <div id="ReplyMessage1712583180568"
-                    class="ReadabilityStyle morePadding readabilityReply ReadabilityMessageTyping">
-                    <p>
-                        當然：<code>bash brew install jesseduffield/lazydocker/lazydocker </code>這個命令將使用Homebrew安裝lazydocker到你的Mac上。
-                    </p>
-                </div>
-
-
             </div>
             <!-- ReadabilityMessageGroup / End  -->
 
