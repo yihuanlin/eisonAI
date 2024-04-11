@@ -62,6 +62,7 @@ function addClickListeners() {
 //
 function sendRunSummaryMessage() {
   sendMessageToContent("runSummary");
+  uiFocus(document.getElementById("SendRunSummaryMessage"), 400);
 }
 
 function selectMode(modeName) {
@@ -149,12 +150,35 @@ function setupStatus() {
   let text = document.getElementById("StatusText");
 
   (async () => {
+    let apiURL = await loadData("APIURL", "");
+    let apiKey = await loadData("APIKEY", "");
+
+    let newURL = apiURL.replace("v1/chat/completions", "v1/models");
+
     let bool = await setupGPT();
     if (bool) {
       text.innerHTML = "已設定";
+      try {
+        const response = await fetch(newURL, {
+          headers: {
+            Authorization: "Bearer " + apiKey,
+          },
+        });
+
+        if (response.ok) {
+          setStatus("normal");
+          text.innerHTML = "通過測試";
+        } else {
+          const { status, statusText } = response;
+          setStatus("error");
+          text.innerHTML = "測試失敗 " + status + statusText;
+        }
+      } catch (error) {
+        setStatus("warming");
+        text.innerHTML = error;
+      }
     } else {
       text.innerHTML = "請先設定 ChatGPT API";
-      toggleArea("AreaWebsite");
     }
   })();
 }
@@ -179,6 +203,16 @@ function delayCall() {
       currentTabs[0].url
     );
   })();
+}
+
+function setStatus(className) {
+  let icon = document.getElementById("StatusIcon");
+
+  icon.classList.remove("normal");
+  icon.classList.remove("warming");
+  icon.classList.remove("error");
+
+  icon.classList.add(className);
 }
 
 // Run app

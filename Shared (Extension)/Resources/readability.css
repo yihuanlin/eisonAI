@@ -52,12 +52,6 @@
   z-index: 89001;
 }
 
-@media only screen and (max-width: 767px) {
-  .readabilityBlurBox {
-    height: 160px;
-  }
-}
-
 #ReadabilityBox {
   z-index: 90000;
 
@@ -73,7 +67,7 @@
   flex-direction: column-reverse;
 
   padding: 32px;
-  max-height: calc(100vh - 32px);
+  max-height: calc(100vh + 32px);
 
   scroll-behavior: smooth;
   overflow-x: hidden;
@@ -112,6 +106,12 @@
   margin-bottom: 10px;
 
   gap: 8px;
+}
+
+.ReadabilityStyle ol,
+.ReadabilityStyle li {
+  display: inline-flex !important;
+  list-style: decimal inside !important;
 }
 
 .readabilityDone {
@@ -527,5 +527,15 @@
 
   #ReadabilityBoxFrame svg {
     color: #fff !important;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .readabilityBlurBox {
+    height: 160px;
+  }
+
+  #ReadabilityBox {
+    max-height: calc(100vh - 32px);
   }
 }

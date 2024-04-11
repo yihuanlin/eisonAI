@@ -50,7 +50,7 @@ function ready() {
 
     if (bool) {
       insertHtml();
-      console.log("Eison-Config:", API_URL, API_KEY, API_MODEL);
+      console.log("Eison init:", API_URL, API_KEY, API_MODEL);
     }
   })();
 }

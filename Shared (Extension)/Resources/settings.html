@@ -26,6 +26,44 @@
             color: rgba(255, 255, 255, 0.3);
         }
 
+        @keyframes dotFlashingAnimation {
+            0% {
+                content: ".";
+            }
+
+            50% {
+                content: "..";
+            }
+
+            100% {
+                content: "...";
+            }
+        }
+
+        .ReadabilityMessageTyping::after {
+            display: inline;
+            content: "...";
+            animation: dotFlashingAnimation 1s infinite;
+        }
+
+        @keyframes jump {
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        .readabilityDone {
+            animation: jump 0.2s infinite;
+        }
+
         @media (prefers-color-scheme: dark) {
 
             html,
@@ -76,8 +114,10 @@
 
         <div class="viewBlock pathBorder contentLeft flexColumn gap10">
             <h5>API URL</h5>
-            <input id="APIURL" class="inputStyle flex1" type="text" placeholder="https://..." />
+            <input id="APIURL" class="inputStyle flex1" type="text"
+                placeholder="https://example.com/v1/chat/completions" />
             <span>Affected by CSP, only HTTPS connections are allowed.</span>
+            <span>Complete structure required: https://example.com/v1/chat/completions</span>
 
             <div class="block"></div>
 
@@ -86,16 +126,13 @@
 
             <h5>API Model</h5>
             <input id="APIMODEL" class="inputStyle flex1" type="text" placeholder="model-name" />
-
-
-
         </div>
     </div>
 
     <div class="block"></div>
 
     <div class="flexRight gap10">
-        <div id="callbackText" class="flex1">...</div>
+        <div id="callbackText" class="flex1"></div>
 
         <input id="CheckAPI" class="button clickListen" data-function="checkAPI" type="button" value="Check" />
 
@@ -123,7 +160,7 @@
         <div class="block"></div>
 
         <div class="flexRight gap10">
-            <div class="button clickListen" data-function="savePrompt">Save</div>
+            <div id="SavePrompt" class="button clickListen" data-function="savePrompt">Save</div>
         </div>
     </div>
 

@@ -77,34 +77,70 @@ async function setupAPISettings() {
 
 function checkAPI() {
   (async () => {
-    await setupGPT();
+    let callbackText = document.getElementById("callbackText");
+
+    let API_URL = document.getElementById("APIURL").value;
+    let API_KEY = document.getElementById("APIKEY").value;
+
+    if (API_URL == "") {
+      callbackText.innerText = "URL empty.";
+      return;
+    }
+
+    if (!API_URL.startsWith("https://")) {
+      callbackText.innerText = "Please enter the HTTPS URL";
+      return;
+    }
+
+    if (!API_URL.endsWith("v1/chat/completions")) {
+      callbackText.innerText =
+        "Complete structure required. eg. https://example.com/v1/chat/completions";
+      return;
+    }
+
+    if (API_URL == "https://example.com/v1/chat/completions") {
+      callbackText.innerText = "example.com is just an example.";
+      return;
+    }
+
+    callbackText.innerText = "";
 
     messagesGroup = [];
 
-    setupSystemMessage();
+    // setupSystemMessage();
     puashAssistantMessage("Ping");
 
+    document.getElementById("SaveAPI").disabled = true;
     document.getElementById("CheckAPI").disabled = true;
     document.getElementById("CheckAPI").value = "...";
 
-    await apiPostMessage(document.getElementById("callbackText"), function () {
-      document.getElementById("SaveAPI").removeAttribute("disabled");
-    });
-
-    document.getElementById("CheckAPI").value = "Check";
-    document.getElementById("CheckAPI").disabled = false;
+    try {
+      await apiPostMessage(
+        callbackText,
+        function () {
+          document.getElementById("SaveAPI").removeAttribute("disabled");
+        },
+        API_URL,
+        API_KEY
+      );
+    } finally {
+      document.getElementById("CheckAPI").value = "Check";
+      document.getElementById("CheckAPI").disabled = false;
+    }
   })();
 }
 
 function saveAPI() {
   (async () => {
     let API_URL = document.getElementById("APIURL").value;
-    let API_KEY = (document.getElementById("APIKEY").value = API_KEY);
-    let API_MODEL = (document.getElementById("APIMODEL").value = API_MODEL);
+    let API_KEY = document.getElementById("APIKEY").value;
+    let API_MODEL = document.getElementById("APIMODEL").value;
 
     await saveData("APIURL", API_URL);
     await saveData("APIKEY", API_KEY);
     await saveData("APIMODEL", API_MODEL);
+
+    uiFocus(document.getElementById("SaveAPI"), 400);
   })();
 }
 
@@ -114,6 +150,8 @@ function savePrompt() {
     let promptText = document.getElementById("Prompt").value;
     await saveData("APPSystemText", systemText);
     await saveData("APPPromptText", promptText);
+
+    uiFocus(document.getElementById("SavePrompt"), 400);
   })();
 }
 

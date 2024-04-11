@@ -21,13 +21,13 @@ async function setupGPT() {
 
 下面為需要總結的文字內容：`;
 
-  API_URL = await loadData("APIURL", "https://...");
-  API_KEY = await loadData("APIKEY", "sk-");
+  API_URL = await loadData("APIURL", "");
+  API_KEY = await loadData("APIKEY", "");
   API_MODEL = await loadData("APIMODEL", "gpt-3.5-turbo");
   APP_PromptText = await loadData("APPPromptText", thisPrompt);
   APP_SystemText = await loadData("APPSystemText", systemText);
 
-  if (API_URL == "https://...") {
+  if (API_URL == "") {
     return false;
   } else {
     return true;
@@ -144,37 +144,57 @@ async function callGPTSummary(inputText) {
   }
 }
 
-async function apiPostMessage(responseElem, callback) {
+async function apiPostMessage(
+  responseElem,
+  callback,
+  appAPIUrl,
+  appAPIKey,
+  appAPIModel
+) {
+  if (appAPIUrl === undefined) {
+    appAPIUrl = API_URL;
+  }
+
+  if (appAPIKey === undefined) {
+    appAPIKey = API_KEY;
+  }
+
+  if (appAPIModel === undefined) {
+    appAPIModel = API_MODEL;
+  }
+
+  console.log(appAPIUrl, appAPIKey);
+
   lastReplyMessage = ""; //reset LastMessage
 
   toggleClass(responseElem, "ReadabilityMessageTyping");
 
-  const response = await fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + API_KEY,
-    },
-    body: JSON.stringify({
-      stream: true,
-      model: API_MODEL,
-      messages: messagesGroup,
-      temperature: 0,
-    }),
-  });
-
-  const reader = response.body
-    ?.pipeThrough(new TextDecoderStream())
-    .getReader();
-
-  if (!reader) {
-    typeSentence("pipeThrough getReader is nil", responseElem);
-    return;
-  }
-
-  let errorResponse;
-
   try {
+    let errorResponse = "";
+
+    const response = await fetch(appAPIUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + appAPIKey,
+      },
+      body: JSON.stringify({
+        stream: true,
+        model: appAPIModel,
+        messages: messagesGroup,
+        temperature: 0,
+      }),
+    });
+
+    const reader = response.body
+      ?.pipeThrough(new TextDecoderStream())
+      .getReader();
+
+    if (!reader) {
+      typeSentence("pipeThrough getReader is nil", responseElem);
+      return;
+    }
+
     while (true) {
       // eslint-disable-next-line no-await-in-loop
       const { value, done } = await reader.read();
@@ -183,6 +203,12 @@ async function apiPostMessage(responseElem, callback) {
       const arr = value.split("\n");
 
       errorResponse = arr[0];
+
+      try {
+        let errorJSON = JSON.parse(errorResponse);
+        typeSentence("Error: " + errorJSON.error.message, responseElem);
+        return;
+      } catch (error) {}
 
       arr.forEach((data) => {
         if (data.length === 0) return; // ignore empty message
@@ -214,30 +240,26 @@ async function apiPostMessage(responseElem, callback) {
         break;
       }
     }
-  } catch (error) {
-    typeSentence(error, responseElem);
-  }
 
-  if (!response.ok) {
-    try {
-      console.log("errorResponse", errorResponse);
+    if (!response.ok) {
+      if (errorResponse != "") {
+        console.log("errorResponse", errorResponse);
 
-      let errorJSON = JSON.parse(errorResponse);
+        let errorJSON = JSON.parse(errorResponse);
 
-      console.error(
-        "HTTP ERROR: " + response.status + "\n" + response.statusText
-      );
-
-      typeSentence(
-        "Status: " + response.status + "\n" + errorJSON.error.message,
-        responseElem
-      );
-    } catch (error) {
-      typeSentence(error, responseElem);
+        typeSentence(
+          "Status: " + response.status + "\n" + errorJSON.error.message,
+          responseElem
+        );
+      } else {
+        typeSentence("Status: " + response.status, responseElem);
+      }
     }
+  } catch (error) {
+    typeSentence("Error: " + error.message, responseElem);
+  } finally {
+    removeClass(responseElem, "ReadabilityMessageTyping");
   }
-
-  toggleClass(responseElem, "ReadabilityMessageTyping");
 }
 
 function markdownMessage(elementReference) {
@@ -309,11 +331,15 @@ function showID(idName) {
   document.querySelector("#" + idName).style.display = "block";
 }
 
-function uiFocus(responseElem) {
+function uiFocus(responseElem, delayMS) {
+  if (delayMS === undefined) {
+    delayMS = 1600;
+  }
+
   responseElem.classList.add("readabilityDone");
   setTimeout(() => {
     responseElem.classList.remove("readabilityDone");
-  }, 1600);
+  }, delayMS);
 }
 
 function toggleClass(element, className) {
@@ -321,6 +347,12 @@ function toggleClass(element, className) {
     element.classList.remove(className);
   } else {
     element.classList.add(className);
+  }
+}
+
+function removeClass(element, className) {
+  if (element.classList.contains(className)) {
+    element.classList.remove(className);
   }
 }
 
@@ -338,7 +370,8 @@ function postProcessText(text) {
     .replaceAll("  ", "")
     .replaceAll("\t", "")
     .replaceAll("\n\n", "")
-    .replaceAll(",,", "");
+    .replaceAll(",,", "")
+    .replaceAll("undefined", "");
 }
 
 // 儲存資料
@@ -371,5 +404,18 @@ async function loadData(key, defaultValue) {
   } catch (error) {
     console.log(error);
     return "";
+  }
+}
+
+async function isURLReachable(url) {
+  try {
+    const response = await fetch(url, { method: "POST" });
+    if (response.ok) {
+      return { reachable: true };
+    } else {
+      return { reachable: false, error: `HTTP Error ${response.status}` };
+    }
+  } catch (error) {
+    return { reachable: false, error: "Error occurred" };
   }
 }

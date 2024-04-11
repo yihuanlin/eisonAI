@@ -5,6 +5,27 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="popup.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+        @keyframes jump {
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        .readabilityDone {
+            animation: jump 0.2s infinite;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -42,8 +63,8 @@
             </div>
 
             <div class="flexCenter flex1 contentRight font12">
-                <div id="StatusIcon" class="statusBox warming"></div>
-                <div id="StatusText">尚未設定模型</div>
+                <div id="StatusIcon" class="statusBox"></div>
+                <div id="StatusText">{Status Text}</div>
             </div>
         </div>
 
@@ -73,7 +94,7 @@
             <h4>Run</h4>
 
             <div class="viewBlock pathBorder flexCenter">
-                <div class="mainButton clickListen" data-function="sendRunSummaryMessage">
+                <div id="SendRunSummaryMessage" class="mainButton clickListen" data-function="sendRunSummaryMessage">
                     <div class="logoInButton">
                         <svg width="21" height="18" viewBox="0 0 21 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
