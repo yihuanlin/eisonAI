@@ -202,17 +202,18 @@ async function apiPostMessage(
       let dataDone = false;
       const arr = value.split("\n");
 
-      errorResponse = arr[0];
-
-      try {
-        let errorJSON = JSON.parse(errorResponse);
-        typeSentence("Error: " + errorJSON.error.message, responseElem);
-        return;
-      } catch (error) {}
-
       arr.forEach((data) => {
         if (data.length === 0) return; // ignore empty message
         if (data.startsWith(":")) return; // ignore sse comment message
+
+        if (!data.startsWith("data")) {
+          try {
+            let errorJSON = JSON.parse(data);
+            typeSentence("Error: " + errorJSON.error.message, responseElem);
+            return;
+          } catch (error) {}
+        }
+
         if (data === "data: [DONE]") {
           dataDone = true;
           return;
@@ -242,18 +243,7 @@ async function apiPostMessage(
     }
 
     if (!response.ok) {
-      if (errorResponse != "") {
-        console.log("errorResponse", errorResponse);
-
-        let errorJSON = JSON.parse(errorResponse);
-
-        typeSentence(
-          "Status: " + response.status + "\n" + errorJSON.error.message,
-          responseElem
-        );
-      } else {
-        typeSentence("Status: " + response.status, responseElem);
-      }
+      typeSentence("Status: " + response.status, responseElem);
     }
   } catch (error) {
     typeSentence("Error: " + error.message, responseElem);

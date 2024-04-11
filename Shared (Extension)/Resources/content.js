@@ -71,7 +71,7 @@ function insertHtml() {
   }
 
   var htmlReadabilityBarCode = `
-  <div id="ReadabilityBar" >
+  <div id="ReadabilityBar" style="display: none;" >
   <div id="viewBar">
       <a href="javascript:void(0)" id="ReadabilityButton">
       <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -95,7 +95,7 @@ function insertHtml() {
   var htmlReadabilityBoxFrameCode = `
 <div id="ReadabilityBoxFrame">
 <div class="readabilityBlurBox"></div>
-<div class="readabilityBlurBackgroundBox"></div>
+<div id= "ReadabilityBlurBackgroundBox" class="readabilityBlurBackgroundBox"></div>
 <div id="ReadabilityBox" class="ReadabilityFont" >
 
 <div id="ReadabilityKeyboard" class="ReadabilityStyle morePadding">
@@ -177,6 +177,10 @@ function insertHtml() {
     .addEventListener("click", hideView);
 
   document
+    .querySelector("#ReadabilityBlurBackgroundBox")
+    .addEventListener("click", hideView);
+
+  document
     .querySelector("#ReadabilitySend")
     .addEventListener("click", sendReply);
 
@@ -202,6 +206,8 @@ function insertHtml() {
       sendReply();
     }
   });
+
+  ReadabilityBarMode();
 }
 
 function ReadabilityBarMode() {
