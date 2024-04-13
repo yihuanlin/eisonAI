@@ -1,5 +1,6 @@
 const MAX_TOKEN = 8000;
 let lastURL = "";
+let APP_MODE = "";
 
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log("Content / Received Message: ", request);
@@ -229,13 +230,13 @@ function insertHtml() {
 
 function ReadabilityBarMode() {
   (async () => {
-    let mode = await loadData("AppMODE", "modeMiniIcon");
+    APP_MODE = await loadData("AppMODE", "modeMiniIcon");
 
-    if (mode == "modeMiniIcon") {
+    if (APP_MODE == "modeMiniIcon") {
       showID("ReadabilityBar");
     }
 
-    if (mode == "modeHidden") {
+    if (APP_MODE == "modeHidden") {
       hideID("ReadabilityBar");
     }
   })();
@@ -296,10 +297,12 @@ function hideClose() {
 }
 
 function hideView() {
-  document.querySelector("#ReadabilityBoxFrame").style.display = "none";
-  document.querySelector("#ReadabilityBar").style.display = "flex";
-
   document.body.style.overflow = "auto";
+
+  document.querySelector("#ReadabilityBoxFrame").style.display = "none";
+  if (APP_MODE == "modeMiniIcon") {
+    showID("ReadabilityBar", "flex");
+  }
 }
 
 function runSummary() {
@@ -330,7 +333,7 @@ function callGPT() {
   }
 
   document.querySelector("#response").innerHTML = "";
-  let coreText = postProcessText(article.textContent);
+  let articleText = postProcessText(article.textContent);
 
   document.querySelector("#receiptTitle").innerHTML = "";
   document.querySelector("#receipt").innerHTML = "";
@@ -339,5 +342,5 @@ function callGPT() {
     "#ReadabilityHost"
   ).innerHTML = `${window.location.host} / ${API_MODEL}`;
 
-  callGPTSummary(coreText);
+  callGPTSummary(articleText);
 }

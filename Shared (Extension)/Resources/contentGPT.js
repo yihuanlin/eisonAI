@@ -47,9 +47,13 @@ function resend() {
   (async () => {
     let elem = getMaxTimestampElem();
 
-    await apiPostMessage(elem, function () {
-      markdownMessage(elem);
-    });
+    if (elem == null) {
+      reanswer();
+    } else {
+      await apiPostMessage(elem, function () {
+        markdownMessage(elem);
+      });
+    }
   })();
 }
 
@@ -150,7 +154,7 @@ async function callGPTSummary(inputText) {
       typeSentence("API Error:" + error, responseElem);
     }
   } else {
-    typeSentence("未能構建 userText", responseElem);
+    typeSentence("構建 User Message 失敗，請重新載入網頁後再試", responseElem);
   }
 }
 
@@ -255,9 +259,11 @@ async function apiPostMessage(
     }
 
     if (!response.ok) {
+      showID("ReadabilityErrorResend", "flex");
       typeSentence("Status: " + response.status, responseElem);
     }
   } catch (error) {
+    showID("ReadabilityErrorResend", "flex");
     typeSentence("Error: " + error.message, responseElem);
   } finally {
     removeClass(responseElem, "ReadabilityMessageTyping");
