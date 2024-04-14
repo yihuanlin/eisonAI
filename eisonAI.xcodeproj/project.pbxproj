@@ -293,9 +293,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		EA7726322BC5B6B3005A194D /* eisonAI (iOS) */ = {
+		EA7726322BC5B6B3005A194D /* iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EA7726862BC5B6B3005A194D /* Build configuration list for PBXNativeTarget "eisonAI (iOS)" */;
+			buildConfigurationList = EA7726862BC5B6B3005A194D /* Build configuration list for PBXNativeTarget "iOS" */;
 			buildPhases = (
 				EA77262F2BC5B6B3005A194D /* Sources */,
 				EA7726302BC5B6B3005A194D /* Frameworks */,
@@ -307,14 +307,14 @@
 			dependencies = (
 				EA7726542BC5B6B3005A194D /* PBXTargetDependency */,
 			);
-			name = "eisonAI (iOS)";
+			name = iOS;
 			productName = "eisonAI (iOS)";
 			productReference = EA7726332BC5B6B3005A194D /* eisonAI.app */;
 			productType = "com.apple.product-type.application";
 		};
-		EA7726442BC5B6B3005A194D /* eisonAI (macOS) */ = {
+		EA7726442BC5B6B3005A194D /* macOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EA77268D2BC5B6B3005A194D /* Build configuration list for PBXNativeTarget "eisonAI (macOS)" */;
+			buildConfigurationList = EA77268D2BC5B6B3005A194D /* Build configuration list for PBXNativeTarget "macOS" */;
 			buildPhases = (
 				EA7726412BC5B6B3005A194D /* Sources */,
 				EA7726422BC5B6B3005A194D /* Frameworks */,
@@ -326,7 +326,7 @@
 			dependencies = (
 				EA77265E2BC5B6B3005A194D /* PBXTargetDependency */,
 			);
-			name = "eisonAI (macOS)";
+			name = macOS;
 			productName = "eisonAI (macOS)";
 			productReference = EA7726452BC5B6B3005A194D /* eisonAI.app */;
 			productType = "com.apple.product-type.application";
@@ -402,8 +402,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				EA7726322BC5B6B3005A194D /* eisonAI (iOS) */,
-				EA7726442BC5B6B3005A194D /* eisonAI (macOS) */,
+				EA7726322BC5B6B3005A194D /* iOS */,
+				EA7726442BC5B6B3005A194D /* macOS */,
 				EA7726502BC5B6B3005A194D /* eisonAI Extension (iOS) */,
 				EA77265A2BC5B6B3005A194D /* eisonAI Extension (macOS) */,
 			);
@@ -760,6 +760,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "iOS (App)/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = eisonAI;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -798,6 +799,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "iOS (App)/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = eisonAI;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -982,7 +984,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EA7726862BC5B6B3005A194D /* Build configuration list for PBXNativeTarget "eisonAI (iOS)" */ = {
+		EA7726862BC5B6B3005A194D /* Build configuration list for PBXNativeTarget "iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EA7726872BC5B6B3005A194D /* Debug */,
@@ -1000,7 +1002,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EA77268D2BC5B6B3005A194D /* Build configuration list for PBXNativeTarget "eisonAI (macOS)" */ = {
+		EA77268D2BC5B6B3005A194D /* Build configuration list for PBXNativeTarget "macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EA77268E2BC5B6B3005A194D /* Debug */,
