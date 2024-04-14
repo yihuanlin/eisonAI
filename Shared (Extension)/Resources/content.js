@@ -5,28 +5,22 @@ let APP_MODE = "";
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log("Content / Received Message: ", request);
 
-  if (request == "runSummary") {
-    runSummary();
-
-    sendResponse({
-      callback: "runSummary-ok",
-    });
-  }
-
-  if (request == "setMode") {
-    ReadabilityBarMode();
-
-    sendResponse({
-      callback: "setMode-ok",
-    });
-  }
-
-  if (request == "getDebugText") {
-    getDebugText();
-
-    sendResponse({
-      callback: "coreContentText-ok",
-    });
+  switch (request) {
+    case "runSummary":
+      runSummary();
+      sendResponse({ callback: "runSummary-ok" });
+      break;
+    case "setMode":
+      ReadabilityBarMode();
+      sendResponse({ callback: "setMode-ok" });
+      break;
+    case "getDebugText":
+      getDebugText();
+      sendResponse({ callback: "coreContentText-ok" });
+      break;
+    default:
+      // Handle unexpected requests if needed
+      break;
   }
 });
 
