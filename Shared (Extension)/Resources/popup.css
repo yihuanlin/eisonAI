@@ -258,7 +258,7 @@ h5 {
 }
 
 .selected .baseModeStyle {
-  border: 2px solid #0a83fc;
+  border: 2px solid #0a83fc !important;
   border-radius: 8px;
 }
 
