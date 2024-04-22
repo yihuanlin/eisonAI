@@ -81,6 +81,7 @@ function checkAPI() {
 
     let API_URL = document.getElementById("APIURL").value;
     let API_KEY = document.getElementById("APIKEY").value;
+    let API_MODEL = document.getElementById("APIMODEL").value;
 
     if (API_URL == "") {
       callbackText.innerText = "URL empty.";
@@ -120,7 +121,8 @@ function checkAPI() {
           document.getElementById("SaveAPI").removeAttribute("disabled");
         },
         API_URL,
-        API_KEY
+        API_KEY,
+        API_MODEL
       );
     } finally {
       document.getElementById("CheckAPI").value = "Check";
