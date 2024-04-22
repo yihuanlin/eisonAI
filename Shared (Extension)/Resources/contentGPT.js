@@ -238,6 +238,10 @@ async function apiPostMessage(
         let choice = JSON.parse(data.substring(6)).choices[0];
         let token = choice.delta.content;
 
+        if (token === undefined) {
+          return;
+        }
+
         if (choice.finish_reason == "stop") {
           token = token;
           dataDone = true;
@@ -275,6 +279,8 @@ function markdownMessage(elementReference) {
 }
 
 function typeSentence(sentence, elementReference) {
+  if (sentence === undefined) return;
+
   lastReplyMessage += sentence;
   elementReference.innerText = lastReplyMessage;
 
