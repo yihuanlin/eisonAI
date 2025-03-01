@@ -17,7 +17,6 @@
   "content_scripts": [
     {
       "js": [
-        "contentLoadingGIF.js",
         "contentReadability.js",
         "contentGPT.js",
         "contentMarked.js",
@@ -39,8 +38,10 @@
     }
   },
   "permissions": ["activeTab", "nativeMessaging", "storage"],
-  "web_accessible_resources": {
-    "resources": ["settings.html"],
-    "matches": ["<all_urls>"]
-  }
+  "web_accessible_resources": [
+    {
+      "resources": ["settings.html"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }

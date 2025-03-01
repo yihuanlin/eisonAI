@@ -192,6 +192,7 @@ async function apiPostMessage(
     const response = await fetch(fetchURL, {
       method: "POST",
       headers: {
+        Authorization: "Bearer " + appAPIKey,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
@@ -221,6 +222,7 @@ async function apiPostMessage(
       arr.forEach((data) => {
         if (data.length === 0) return; // ignore empty message
         if (data.startsWith(":")) return; // ignore sse comment message
+        if (data.startsWith("id")) return; // 
 
         if (!data.startsWith("data")) {
           try {
