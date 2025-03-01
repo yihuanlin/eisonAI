@@ -97,13 +97,6 @@ function setupButtonBarActions() {
   });
 }
 
-async function setupMode() {
-  const mode = await loadData("AppMODE", "modeMiniIcon");
-  const modeText = mode === "modeMiniIcon" ? "Mini icon" : "Hidden";
-  document.getElementById("CurrentMode").textContent = modeText;
-  sendMessageToContent("setMode");
-}
-
 function toggleArea(id) {
   const correspondingElement = document.querySelector("#" + id);
 
@@ -184,9 +177,6 @@ function delayCall() {
     document.querySelector("#currentHOST").innerHTML = getHostFromUrl(
       currentTabs[0].url
     );
-
-    //
-    await setupMode();
   })();
 }
 
