@@ -55,8 +55,6 @@
 		EA7726AA2BC5B91D005A194D /* contentGPT.js in Resources */ = {isa = PBXBuildFile; fileRef = EA7726A52BC5B91C005A194D /* contentGPT.js */; };
 		EA7726AB2BC5B91D005A194D /* contentReadability.js in Resources */ = {isa = PBXBuildFile; fileRef = EA7726A62BC5B91C005A194D /* contentReadability.js */; };
 		EA7726AC2BC5B91D005A194D /* contentReadability.js in Resources */ = {isa = PBXBuildFile; fileRef = EA7726A62BC5B91C005A194D /* contentReadability.js */; };
-		EA7726AD2BC5B91D005A194D /* contentLoadingGIF.js in Resources */ = {isa = PBXBuildFile; fileRef = EA7726A72BC5B91C005A194D /* contentLoadingGIF.js */; };
-		EA7726AE2BC5B91D005A194D /* contentLoadingGIF.js in Resources */ = {isa = PBXBuildFile; fileRef = EA7726A72BC5B91C005A194D /* contentLoadingGIF.js */; };
 		EA7726AF2BC5B91D005A194D /* contentMarked.js in Resources */ = {isa = PBXBuildFile; fileRef = EA7726A82BC5B91C005A194D /* contentMarked.js */; };
 		EA7726B02BC5B91D005A194D /* contentMarked.js in Resources */ = {isa = PBXBuildFile; fileRef = EA7726A82BC5B91C005A194D /* contentMarked.js */; };
 /* End PBXBuildFile section */
@@ -139,7 +137,6 @@
 		EA77269C2BC5B71D005A194D /* readability.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = readability.css; sourceTree = "<group>"; };
 		EA7726A52BC5B91C005A194D /* contentGPT.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = contentGPT.js; sourceTree = "<group>"; };
 		EA7726A62BC5B91C005A194D /* contentReadability.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = contentReadability.js; sourceTree = "<group>"; };
-		EA7726A72BC5B91C005A194D /* contentLoadingGIF.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = contentLoadingGIF.js; sourceTree = "<group>"; };
 		EA7726A82BC5B91C005A194D /* contentMarked.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = contentMarked.js; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -225,7 +222,6 @@
 				EA77262A2BC5B6B3005A194D /* background.js */,
 				EA77262B2BC5B6B3005A194D /* content.js */,
 				EA7726A52BC5B91C005A194D /* contentGPT.js */,
-				EA7726A72BC5B91C005A194D /* contentLoadingGIF.js */,
 				EA7726A82BC5B91C005A194D /* contentMarked.js */,
 				EA7726A62BC5B91C005A194D /* contentReadability.js */,
 				EA7726282BC5B6B3005A194D /* images */,
@@ -446,7 +442,6 @@
 				EA77269F2BC5B71D005A194D /* settings.html in Resources */,
 				EA7726762BC5B6B3005A194D /* background.js in Resources */,
 				EA7726A32BC5B71D005A194D /* readability.css in Resources */,
-				EA7726AD2BC5B91D005A194D /* contentLoadingGIF.js in Resources */,
 				EA77267C2BC5B6B3005A194D /* popup.css in Resources */,
 				EA77267A2BC5B6B3005A194D /* popup.html in Resources */,
 				EA7726722BC5B6B3005A194D /* images in Resources */,
@@ -468,7 +463,6 @@
 				EA7726A02BC5B71D005A194D /* settings.html in Resources */,
 				EA7726772BC5B6B3005A194D /* background.js in Resources */,
 				EA7726A42BC5B71D005A194D /* readability.css in Resources */,
-				EA7726AE2BC5B91D005A194D /* contentLoadingGIF.js in Resources */,
 				EA77267D2BC5B6B3005A194D /* popup.css in Resources */,
 				EA77267B2BC5B6B3005A194D /* popup.html in Resources */,
 				EA7726732BC5B6B3005A194D /* images in Resources */,
