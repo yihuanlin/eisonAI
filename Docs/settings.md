@@ -7,60 +7,82 @@ settings.js 和 settings.html 組成了擴展的設置頁面，提供 API 配置
 ## HTML 結構 (settings.html)
 
 ### 安全性配置
+
 ```html
-<meta http-equiv="Content-Security-Policy" content="script-src 'self' 'nonce-ABC123';" />
+<meta
+  http-equiv="Content-Security-Policy"
+  content="script-src 'self' 'nonce-ABC123';"
+/>
 ```
 
 ### 主要區塊
 
 1. ChatGPT API 配置區
+
 ```html
 <div class="viewBlock pathBorder contentLeft flexColumn gap10">
-    <h5>API URL</h5>
-    <input id="APIURL" class="inputStyle flex1" type="text" />
-    <h5>API Key</h5>
-    <input id="APIKEY" class="inputStyle flex1" type="text" />
-    <h5>API Model</h5>
-    <input id="APIMODEL" class="inputStyle flex1" type="text" />
+  <h5>API URL</h5>
+  <input id="APIURL" class="inputStyle flex1" type="text" />
+  <h5>API Key</h5>
+  <input id="APIKEY" class="inputStyle flex1" type="text" />
+  <h5>API Model</h5>
+  <input id="APIMODEL" class="inputStyle flex1" type="text" />
 </div>
 ```
 
 2. Prompt 配置區
+
 ```html
 <div class="viewBlock pathBorder contentLeft flexColumn gap10">
-    <h5>System Text</h5>
-    <textarea id="SystemText" class="inputStyle flex1"></textarea>
-    <h5>Prompt</h5>
-    <textarea id="Prompt" class="inputStyle flex1"></textarea>
+  <h5>System Text</h5>
+  <textarea id="SystemText" class="inputStyle flex1"></textarea>
+  <h5>Prompt</h5>
+  <textarea id="Prompt" class="inputStyle flex1"></textarea>
 </div>
 ```
 
 ### 特殊效果
 
 1. 點狀動畫
+
 ```css
 @keyframes dotFlashingAnimation {
-    0% { content: "."; }
-    50% { content: ".."; }
-    100% { content: "..."; }
+  0% {
+    content: ".";
+  }
+  50% {
+    content: "..";
+  }
+  100% {
+    content: "...";
+  }
 }
 ```
 
 2. 跳躍動畫
+
 ```css
 @keyframes jump {
-    0% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
-    100% { transform: translateY(0); }
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 ```
 
 ### 深色模式支援
+
 ```css
 @media (prefers-color-scheme: dark) {
-    html, body {
-        background-color: #1f2225;
-    }
+  html,
+  body {
+    background-color: #1f2225;
+  }
 }
 ```
 
@@ -69,45 +91,52 @@ settings.js 和 settings.html 組成了擴展的設置頁面，提供 API 配置
 ### 核心功能
 
 1. 數據存儲管理
+
 ```javascript
 // 儲存資料
 async function saveData(key, data) {
-    try {
-        const obj = {};
-        obj[key] = data;
-        await browser.storage.local.set(obj);
-    } catch (error) {
-        console.log(error);
-    }
+  try {
+    const obj = {};
+    obj[key] = data;
+    await browser.storage.local.set(obj);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // 讀取資料
 async function loadData(key, defaultValue) {
-    try {
-        const result = await browser.storage.local.get(key);
-        const data = result[key];
-        return data === undefined ? (defaultValue === undefined ? "" : defaultValue) : data;
-    } catch (error) {
-        console.log(error);
-        return "";
-    }
+  try {
+    const result = await browser.storage.local.get(key);
+    const data = result[key];
+    return data === undefined
+      ? defaultValue === undefined
+        ? ""
+        : defaultValue
+      : data;
+  } catch (error) {
+    console.log(error);
+    return "";
+  }
 }
 ```
 
 2. API 設置管理
+
 ```javascript
 async function setupAPISettings() {
-    await setupGPT();
-    // 填充 API 相關設置
-    document.getElementById("APIURL").value = API_URL;
-    document.getElementById("APIKEY").value = API_KEY;
-    document.getElementById("APIMODEL").value = API_MODEL;
-    document.getElementById("Prompt").innerText = APP_PromptText;
-    document.getElementById("SystemText").innerText = APP_SystemText;
+  await setupGPT();
+  // 填充 API 相關設置
+  document.getElementById("APIURL").value = API_URL;
+  document.getElementById("APIKEY").value = API_KEY;
+  document.getElementById("APIMODEL").value = API_MODEL;
+  document.getElementById("Prompt").innerText = APP_PromptText;
+  document.getElementById("SystemText").innerText = APP_SystemText;
 }
 ```
 
 3. API 驗證機制
+
 ```javascript
 function checkAPI() {
     // URL 格式驗證
@@ -137,17 +166,20 @@ function checkAPI() {
 ### 數據交互流程
 
 1. 初始化階段
+
 - 載入已保存的 API 設置
 - 設置按鈕事件監聽器
 - 填充表單數據
 
 2. API 設置保存流程
+
 - 驗證 API URL 格式
 - 測試 API 連接
 - 成功後啟用保存按鈕
 - 保存設置到本地儲存
 
 3. Prompt 設置保存流程
+
 - 讀取表單數據
 - 保存到本地儲存
 - 提供視覺反饋
@@ -155,11 +187,13 @@ function checkAPI() {
 ### 安全性考慮
 
 1. CSP (Content Security Policy)
+
 - 限制腳本來源
 - 只允許 HTTPS 連接
 - 使用 nonce 驗證
 
 2. 輸入驗證
+
 - API URL 格式檢查
 - HTTPS 協議要求
 - 路徑結構驗證
