@@ -1,36 +1,28 @@
 @charset "UTF-8";
 
-/* 重置所有樣式 */
-#ReadabilityBoxFrame * {
-  all: initial;
-  box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-}
-
-/* 根容器 */
 #ReadabilityBoxFrame {
-  --readability-z-index-base: 90000;
-  --readability-primary-bg: rgba(255, 255, 255, 0.98);
-  --readability-text-color: #000;
-  --readability-border-radius: 12px;
-  --readability-shadow: 0px 2px 12px rgba(0, 0, 0, 0.12);
-  --readability-padding: 16px;
-  --readability-icon-color: currentColor;
+  z-index: 90000;
 
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
   bottom: 0;
+
   display: none;
+
   height: 100vh;
+
+  animation: slideIn 0.8s;
+
   width: 100vw;
   justify-content: center;
-  z-index: var(--readability-z-index-base);
-  animation: slideIn 0.8s;
 }
 
-/* 模糊效果 */
-.readability-ui-blur {
+.readabilityCursorPointer {
+  cursor: pointer;
+}
+
+.readabilityBlurBox {
   -webkit-mask-image: linear-gradient(
     to top,
     rgba(0, 0, 0, 0),
@@ -50,10 +42,10 @@
   top: 0;
   width: 100%;
   height: 80px;
-  z-index: calc(var(--readability-z-index-base) + 1);
+  z-index: 90001;
 }
 
-.readability-ui-blur-background {
+.readabilityBlurBackgroundBox {
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
   position: absolute;
@@ -61,142 +53,212 @@
   top: 0;
   width: 100vw;
   height: 100vh;
-  z-index: calc(var(--readability-z-index-base) - 999);
+  z-index: 89001;
 }
 
-/* 主要容器 */
 #ReadabilityBox {
-  --readability-container-width: 460px;
-  --readability-container-padding: 32px;
+  z-index: 90000;
 
   position: relative;
-  max-width: var(--readability-container-width);
+  max-width: 460px;
   width: 100vw;
   bottom: 0px;
+
   margin-top: auto;
   margin-bottom: -32px;
+
   display: flex;
   flex-direction: column-reverse;
-  padding: var(--readability-container-padding);
+  padding: 32px;
+
   max-height: calc(100vh - 32px);
+
   scroll-behavior: smooth;
   overflow-x: hidden;
   overflow-y: auto;
-  z-index: var(--readability-z-index-base);
 }
 
-/* 滾動條樣式 */
+#ReadabilityAnchor {
+  overflow-anchor: auto;
+  height: 1px;
+}
+
 #ReadabilityBox::-webkit-scrollbar {
   width: 0.1rem;
+  /* 设置滚动条宽度为 0.1rem */
   background-color: transparent;
+  /* 设置滚动条背景颜色为透明 */
 }
 
-/* 卡片基礎樣式 */
-.readability-ui-card {
-  padding: var(--readability-padding);
-  border-radius: var(--readability-border-radius);
-  background-color: var(--readability-primary-bg);
-  box-shadow: var(--readability-shadow);
+.ReadabilityFont {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Symbol", "Segoe UI Emoji",
+    "Noto Color Emoji", sans-serif !important;
+}
+
+.ReadabilityStyle {
+  padding: 8px;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.98);
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.12);
   -webkit-backdrop-filter: blur(2px);
   backdrop-filter: blur(2px);
   margin-bottom: 10px;
+
   gap: 8px;
-  color: var(--readability-text-color);
+
+  color: #000;
 }
 
-/* 按鈕樣式 */
-.readability-ui-button {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
+.ReadabilityStyle ol,
+.ReadabilityStyle li {
+  display: inline-flex !important;
+  list-style: decimal inside !important;
 }
 
-/* 圖標按鈕 */
-.readability-ui-icon {
-  background-color: #ebebeb;
-  border-radius: 8px;
-  padding: 12px;
-  color: var(--readability-icon-color);
+.readabilityDone {
+  animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.03, 0.515, 0.955) both !important;
 }
 
-/* 錯誤狀態 */
-.readability-ui-error {
-  background-color: #d10000;
-  color: #fff;
-}
-
-/* 文本樣式 */
-.readability-ui-text {
+.readabilityReply {
   font-style: normal;
   text-align: left;
   color: #444;
+
   font-size: 13px;
   line-height: 24px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  animation: fadeIn 0.8s;
+
   white-space: pre-line;
+
+  flex-direction: column;
 }
 
-/* 標題樣式 */
-.readability-ui-title {
+.morePadding {
+  padding: 16px !important;
+}
+
+.readabilityUserReply {
+  text-align: right !important;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+#ReadabilityBox hr {
+  background: none;
+  color: none;
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 0;
+  padding: 0;
+  margin: 8px 0;
+  display: block !important;
+}
+
+.readabilityInput {
+  display: flex;
+  justify-content: left;
+  align-items: left;
+
+  gap: 8px;
+}
+
+.fixMorePadding {
+  margin: -8px;
+}
+
+#ReadabilityKeyboard {
+  color: #000 !important;
+}
+
+#ReadabilityTextarea {
+  flex: 1;
+}
+
+#ReadabilityKeyboard textarea {
+  border: none !important;
+  width: 100% !important;
+  resize: none !important;
+  overflow: hidden !important;
+  min-height: 1em !important;
+  max-height: 100px !important;
+  display: inline-block !important;
+  font-size: 16px !important;
+  color: #000 !important;
+  font-weight: 200 !important;
+  margin: 0 !important;
+}
+
+.readabilityInsideStyle {
+  background: #ebebeb !important;
+  border-radius: 8px !important;
+  padding: 12px !important;
+  box-shadow: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.readabilityInsideStyle.readabilityError {
+  background-color: #d10000 !important;
+  color: #fff;
+}
+
+.readabilityTips {
+  color: #4b4b4b !important;
+  opacity: 0.7 !important;
+}
+
+#response,
+#receipt,
+#receiptTitle {
   font-style: normal;
-  font-weight: 700;
-  font-size: 12px;
-  line-height: 18px;
-  color: var(--readability-text-color);
+  text-align: left;
+  color: #444;
+  white-space: pre-line;
+  margin: 0;
+  padding: 0;
+
+  font-size: 14px;
+  line-height: 26px;
+  display: flex;
 }
 
-/* 副標題樣式 */
-.readability-ui-subtitle {
+#receiptTitle {
+  font-weight: bolder;
+  white-space: normal;
+  margin-bottom: 1em;
+}
+
+#ReadabilityBox p {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+  word-wrap: break-word;
+}
+
+.safariExtensionTitle,
+.safariExtensionHost {
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
-  color: #4b4b4b;
-  opacity: 0.7;
+  text-align: left;
+  font-weight: 700;
+  color: #000000;
 }
 
-/* 間距元素 */
-.readability-ui-spacer {
-  padding-top: 150px;
+.safariExtensionHost {
+  font-weight: 400;
 }
 
-/* 輸入區域樣式 */
-.readability-ui-input-group {
-  display: flex;
-  justify-content: left;
-  align-items: left;
-  gap: 8px;
-}
-
-.readability-ui-fix-padding {
-  margin: -8px;
-}
-
-/* 輸入框樣式 */
-.readability-ui-input {
-  flex: 1;
-  border: none;
-  width: 100%;
-  min-height: 1em;
-  max-height: 100px;
-  font-size: 16px;
-  color: var(--readability-text-color);
-  font-weight: 200;
-  margin: 0;
-  padding: 12px;
-  background: #ebebeb;
-  border-radius: 8px;
-  outline: none;
-}
-
-.readability-ui-input[contenteditable="true"]:empty:before {
-  content: attr(data-placeholder);
-  color: #666;
-}
-
-/* 加載區域樣式 */
-.readability-ui-loading {
+#ReadabilityLoading {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -205,83 +267,94 @@
   margin-bottom: 1em;
 }
 
-.readability-ui-loading .readability-ui-text {
+#ReadabilityLoading span {
   padding-top: 6px;
   font-size: 10px;
-  color: var(--readability-text-color);
+  color: #000;
 }
 
-/* 圖片樣式 */
-.readability-ui-image {
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-
-/* 列表樣式 */
-.readability-ui-text ul,
-.readability-ui-text ol {
+#receipt h1,
+#receipt h2,
+#receipt h3,
+#receipt h4,
+#receipt h5,
+#receipt strong {
+  font-weight: bolder;
   margin: 0;
   padding: 0;
-  margin-left: 1.5em;
 }
 
-.readability-ui-text li {
-  margin: 0.5em 0;
+#receipt ol,
+#receipt ul {
+  list-style: disc;
+  list-style-position: inside;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  margin-block: 0;
+  padding-block: 0;
+  padding-inline: 0;
 }
 
-/* 標題樣式 */
-.readability-ui-text h1,
-.readability-ui-text h2,
-.readability-ui-text h3,
-.readability-ui-text h4,
-.readability-ui-text h5,
-.readability-ui-text strong {
-  font-weight: 600;
-  margin: 0.5em 0;
+#receipt li {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  margin-block: 0;
+  padding-block: 0;
+  padding-inline: 0;
 }
 
-/* 懸浮按鈕 */
+/* ReadabilityBar */
+
 #ReadabilityBar {
   display: block;
-  z-index: calc(var(--readability-z-index-base) + 2);
-  animation: fadeIn 0.8s;
+  z-index: 90002;
+  animation: fadeIndn 0.8s;
 }
 
-.readability-ui-float-button {
-  --button-size: 40px;
+#ReadabilityBar #viewBar {
+  margin: 0;
+  padding: 0;
+
+  background: rgba(244, 245, 244, 0.85);
+  box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.12);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+
   position: fixed;
+
+  border-radius: 0px 16px 16px 0px;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  width: var(--button-size);
-  height: var(--button-size);
-  margin: 0;
-  padding: 0;
-  left: 0;
+
+  z-index: 90003;
+  width: 40px !important;
+  height: 40px !important;
+  left: 0px;
   bottom: 26px;
-  border-radius: 0px 16px 16px 0px;
-  background: rgba(244, 245, 244, 0.85);
-  box-shadow: var(--readability-shadow);
-  -webkit-backdrop-filter: blur(2px);
-  backdrop-filter: blur(2px);
 }
 
-.readability-ui-float-button-icon {
+#ReadabilityBar #viewBar a {
   text-align: center;
+
   font-family: system-ui;
   font-style: normal;
   font-weight: 590;
   font-size: 16px;
-  color: var(--readability-text-color);
+
+  color: rgba(0, 0, 0, 0.75);
   text-decoration: none;
+
+  line-height: 1px;
   border: none;
-  width: 20px;
-  height: 18px;
+  width: 20px !important;
+  height: 18px !important;
 }
 
-/* 代碼塊 */
-.readability-ui-code-block {
+.readabilityReply code {
   display: block;
   background-color: rgba(120, 120, 120, 0.15);
   padding: 1em;
@@ -291,129 +364,189 @@
   margin: 6px 0;
 }
 
-/* 按鈕組 */
-.readability-ui-button-group {
+#ReadabilityMessageButtons {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0px;
   gap: 10px;
-  width: 100%;
-}
 
-.readability-ui-action-button {
-  padding: 12px 16px;
-  cursor: pointer;
+  flex: none;
+  order: 2;
+  align-self: stretch;
+  flex-grow: 0;
+
   font-size: 14px;
 }
 
-/* 動畫效果 */
-@keyframes typing {
-  0% { content: ""; }
-  25% { content: "."; }
-  50% { content: ".."; }
-  75% { content: "..."; }
+.readabilityMessageButton {
+  padding: 12px 16px;
+  cursor: pointer;
 }
 
-.readability-ui-typing::after {
-  content: "";
-  display: inline-block;
-  animation: typing 1s steps(4) infinite;
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
+@keyframes dotFlashingAnimation {
+  0% {
+    content: ".";
   }
-  to {
+  50% {
+    content: "..";
+  }
+  100% {
+    content: "...";
+  }
+}
+
+.ReadabilityMessageTyping::after {
+  display: inline;
+  content: "...";
+  animation: dotFlashingAnimation 1s infinite;
+}
+
+/* animation */
+
+@keyframes blink {
+  50% {
+    color: transparent;
+  }
+}
+.readability__loader__dot {
+  animation: 1s blink infinite;
+}
+.readability__loader__dot:nth-child(2) {
+  animation-delay: 250ms;
+}
+.readability__loader__dot:nth-child(3) {
+  animation-delay: 500ms;
+}
+
+.fadeIn {
+  animation: fadeIn 0.8s;
+}
+
+.fadeOut {
+  animation: fadeOut 0.8s;
+}
+
+@keyframes fadeOut {
+  0% {
     opacity: 1;
-    transform: translateY(0);
+    display: flex !important;
+  }
+
+  99% {
+    opacity: 0;
+  }
+
+  100% {
+    display: none !important;
+    opacity: 0;
   }
 }
 
-@keyframes slide-up {
-  from {
-    transform: translateY(100%);
+.fadeOut {
+  animation: fadeOut 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
     opacity: 0;
+    display: none !important;
   }
-  to {
-    transform: translateY(0);
+
+  1% {
+    display: flex !important;
+  }
+
+  100% {
     opacity: 1;
   }
 }
 
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    bottom: -200px;
+    display: none !important;
+  }
+
+  1% {
+    display: block !important;
+  }
+
+  100% {
+    opacity: 1;
+    bottom: 0px;
+  }
 }
 
-/* 動畫類 */
-.readability-ui-fade-in {
-  animation: fade-in 0.3s ease-out;
+@keyframes shake-horizontal {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70% {
+    transform: translateX(-5px);
+  }
+
+  20%,
+  40%,
+  60% {
+    transform: translateX(5px);
+  }
+
+  80% {
+    transform: translateX(3px);
+  }
+
+  90% {
+    transform: translateX(-3px);
+  }
 }
 
-.readability-ui-slide-up {
-  animation: slide-up 0.3s ease-out;
-}
+/* @media */
 
-.readability-ui-shake {
-  animation: shake 0.5s ease-in-out;
-}
-
-/* 暗色主題 */
 @media (prefers-color-scheme: dark) {
-  #ReadabilityBoxFrame {
-    --readability-primary-bg: rgba(28, 28, 28, 0.95);
-    --readability-text-color: #fff;
-    --readability-input-bg: #333;
-    --readability-icon-color: #fff;
-    --readability-float-button-bg: #000;
+  #ReadabilityBar #viewBar {
+    background-color: #000 !important;
   }
 
-  .readability-ui-float-button {
-    background-color: var(--readability-float-button-bg);
+  .ReadabilityStyle {
+    background-color: rgba(10, 10, 10, 0.95);
+
+    color: #fff !important;
   }
 
-  .readability-ui-input {
-    background-color: var(--readability-input-bg);
+  .safariExtensionTitle,
+  .safariExtensionHost,
+  #response,
+  #receipt,
+  #receiptTitle,
+  #ReadabilityLoading span {
+    color: #fff !important;
   }
 
-  .readability-ui-code-block {
-    background-color: rgba(255, 255, 255, 0.1);
+  #ReadabilityKeyboard textarea,
+  .readabilityInsideStyle {
+    background-color: #333333 !important;
+    color: #fff !important;
   }
 
-  .readability-ui-icon {
-    background-color: var(--readability-input-bg);
+  #ReadabilityBoxFrame svg {
+    color: #fff !important;
   }
 }
 
-/* 移動端適配 */
 @media only screen and (max-width: 767px) {
-  .readability-ui-blur {
+  .readabilityBlurBox {
     height: 160px;
   }
 
   #ReadabilityBox {
-    --readability-container-padding: 16px;
-    padding: var(--readability-container-padding);
-  }
-
-  .readability-ui-card {
-    padding: 12px;
-  }
-
-  .readability-ui-input {
-    font-size: 14px;
-  }
-}
-
-/* 小屏幕優化 */
-@media only screen and (max-width: 480px) {
-  #ReadabilityBox {
-    --readability-container-padding: 12px;
-  }
-
-  .readability-ui-float-button {
-    --button-size: 36px;
+    max-height: calc(100vh - 32px);
   }
 }

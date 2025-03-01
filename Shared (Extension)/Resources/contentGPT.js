@@ -27,11 +27,12 @@ async function setupGPT() {
   APP_PromptText = await loadData("APPPromptText", thisPrompt);
   APP_SystemText = await loadData("APPSystemText", systemText);
 
-  if (API_URL == "") {
+  if (API_URL === "") {
+    console.error("SetupGPT: Failed - Missing API URL");
     return false;
-  } else {
-    return true;
   }
+  
+  return true;
 }
 
 async function sendReplytext(text) {
@@ -115,46 +116,41 @@ function setupSystemMessage() {
 
 // GPT 總結
 async function callGPTSummary(inputText) {
-  //Cache DOM elements to avoid unnecessary DOM traversals
-
   let responseElem = document.getElementById("response");
   lastReplyMessage = "";
-
   let assistantText = "";
 
-  callLoading();
-  showID("response");
+  try {
+    if (!inputText || inputText.length <= 0) {
+      console.error("GPT Summary - Empty input text");
+      typeSentence("錯誤：無法獲取頁面內容，請重新載入後再試", responseElem);
+      return;
+    }
 
-  let userText = APP_PromptText + "<" + inputText + ">";
+    callLoading();
+    showID("response");
 
-  if (userText.length <= 0) {
-    typeSentence("userText Empty", responseElem);
-    return;
-  }
-
-  if (inputText) {
+    let userText = APP_PromptText + "<" + inputText + ">";
     setupSystemMessage();
     puashAssistantMessage(assistantText);
     pushUserMessage(userText);
 
-    try {
-      await apiPostMessage(responseElem, function () {
-        // GPT Done
-        hideID("response");
-        hideLoading();
-        setupSummary();
-
-        showID("ReadabilityReanswer");
-
-        uiFocus(document.getElementById("ReadabilityFrame"));
-
-        lastURL = window.location.href;
-      });
-    } catch (error) {
-      typeSentence("API Error:" + error, responseElem);
+    await apiPostMessage(responseElem, function () {
+      hideID("response");
+      hideLoading();
+      setupSummary();
+      showID("ReadabilityReanswer");
+      uiFocus(document.getElementById("ReadabilityFrame"));
+      lastURL = window.location.href;
+    });
+  } catch (error) {
+    console.error("GPT Summary - Error:", error);
+    typeSentence("API 調用錯誤：" + error.message + "\n請檢查 API 設定或重試", responseElem);
+    showID("ReadabilityErrorResend", "flex");
+  } finally {
+    if (!responseElem.innerText) {
+      hideLoading();
     }
-  } else {
-    typeSentence("構建 User Message 失敗，請重新載入網頁後再試", responseElem);
   }
 }
 
@@ -177,6 +173,13 @@ async function apiPostMessage(
     appAPIModel = API_MODEL;
   }
 
+  if (!appAPIUrl) {
+    console.error("API Post - Missing API URL");
+    typeSentence("錯誤：API 設定不完整，請檢查 API URL 設定。", responseElem);
+    showID("ReadabilityErrorResend", "flex");
+    return;
+  }
+
   lastReplyMessage = ""; //reset LastMessage
 
   toggleClass(responseElem, "ReadabilityMessageTyping");
@@ -189,8 +192,7 @@ async function apiPostMessage(
     const response = await fetch(fetchURL, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + appAPIKey,
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         stream: true,
