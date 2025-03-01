@@ -135,7 +135,6 @@ function insertHtml() {
 <div id="ReadabilityMessageGroup">
 <div id="ReadabilityFrame" class="readability-ui-card readability-ui-padding">
    <div id="ReadabilityLoading" class="readability-ui-loading">
-       <div class="readability-ui-image" style="background-image: url('${lottieURL}'); width: 48px; height: 48px;"></div>
        <div class="readability-ui-text">Eison · 愛省流君</div>
    </div>
    <div id="response" class="readability-ui-text typing"></div>
