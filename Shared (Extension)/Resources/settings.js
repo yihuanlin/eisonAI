@@ -156,8 +156,58 @@ function savePrompt() {
   })();
 }
 
+// Mode selection handling
+function setupModeSelectBox() {
+  function handleModeSelectBoxClick() {
+    const modeSelectBoxes = document.querySelectorAll(".modeSelectBox");
+
+    modeSelectBoxes.forEach((box) => {
+      box.classList.remove("selected");
+    });
+
+    this.classList.add("selected");
+  }
+
+  const modeSelectBoxes = document.querySelectorAll(".modeSelectBox");
+  modeSelectBoxes.forEach((box) => {
+    box.addEventListener("click", handleModeSelectBoxClick);
+  });
+}
+
+function selectMode(mode) {
+  if (mode == "modeMiniIcon") {
+    document.getElementById("ModeMiniIconBox").classList.add("selected");
+  }
+
+  if (mode == "modeHidden") {
+    document.getElementById("ModeHiddenBox").classList.add("selected");
+  }
+}
+
+async function setupModeSettings() {
+  try {
+    const currentMode = await loadData("AppMODE", "modeMiniIcon");
+    selectMode(currentMode);
+  } catch (error) {
+    console.error("Error in setupModeSettings:", error);
+  }
+}
+
+function saveMode() {
+  (async () => {
+    const selectedMode = document.querySelector(".modeSelectBox.selected");
+    if (selectedMode) {
+      const mode = selectedMode.getAttribute("data-params");
+      await saveData("AppMODE", mode);
+      uiFocus(document.getElementById("SaveMode"), 400);
+    }
+  })();
+}
+
 // run ...
-(async () => {
+document.addEventListener("DOMContentLoaded", async () => {
   addClickListeners();
+  setupModeSelectBox();
   await setupAPISettings();
-})();
+  await setupModeSettings();
+});

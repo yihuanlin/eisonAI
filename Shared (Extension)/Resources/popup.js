@@ -65,12 +65,6 @@ function sendRunSummaryMessage() {
   uiFocus(document.getElementById("SendRunSummaryMessage"), 400);
 }
 
-function selectMode(modeName) {
-  console.log("select", modeName);
-  saveData("AppMODE", modeName);
-  sendMessageToContent("setMode");
-}
-
 function getHostFromUrl(url) {
   const parsedUrl = new URL(url);
   return parsedUrl.host;
@@ -92,23 +86,6 @@ function saveAPIConfig() {
   })();
 }
 
-function setupModeSelectBox() {
-  function handleModeSelectBoxClick() {
-    const modeSelectBoxes = document.querySelectorAll(".modeSelectBox");
-
-    modeSelectBoxes.forEach((box) => {
-      box.classList.remove("selected");
-    });
-
-    this.classList.add("selected");
-  }
-
-  const modeSelectBoxes = document.querySelectorAll(".modeSelectBox");
-  modeSelectBoxes.forEach((box) => {
-    box.addEventListener("click", handleModeSelectBoxClick);
-  });
-}
-
 function setupButtonBarActions() {
   const buttonBars = document.querySelectorAll(".buttonBar");
 
@@ -121,15 +98,10 @@ function setupButtonBarActions() {
 }
 
 async function setupMode() {
-  let mode = await loadData("AppMODE", "modeMiniIcon");
-
-  if (mode == "modeMiniIcon") {
-    document.getElementById("ModeMiniIconBox").classList.add("selected");
-  }
-
-  if (mode == "modeHidden") {
-    document.getElementById("ModeHiddenBox").classList.add("selected");
-  }
+  const mode = await loadData("AppMODE", "modeMiniIcon");
+  const modeText = mode === "modeMiniIcon" ? "Mini icon" : "Hidden";
+  document.getElementById("CurrentMode").textContent = modeText;
+  sendMessageToContent("setMode");
 }
 
 function toggleArea(id) {
@@ -194,12 +166,8 @@ function setupStatus() {
 }
 
 function mainApp() {
-  setupModeSelectBox();
   setupButtonBarActions();
   addClickListeners();
-
-  //
-
   setPlatformClassToBody();
 
   //runtime only
