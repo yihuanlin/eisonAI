@@ -63,7 +63,7 @@ EisonAI 是一個智能的 Safari 瀏覽器插件，使用先進的大語言模�
 
 ## 安裝方法
 
-1. 從 App Store 下載 EisonAI
+1. 從 testflight 下載 EisonAI https://testflight.apple.com/join/1nfTzlPS
 2. 在 Safari 設定中啟用 EisonAI 插件：
    - 打開 Safari 偏好設定
    - 點擊「擴展」標籤
