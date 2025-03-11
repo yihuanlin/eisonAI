@@ -137,6 +137,30 @@ open eisonAI.xcodeproj
 
 本項目遵循 [行為準則](CODE_OF_CONDUCT.md)，請所有參與者遵守。
 
+## 關聯項目
+
+### [newSafari](https://github.com/qoli/newSafari)
+
+newSafari 是一個相似的 Safari 網頁內容擷取與總結工具，提供以下特點：
+
+- **基本擷取模式**：
+  - 自動獲取當前 Safari 頁面的 URL 和標題
+  - 智能清理 HTML 內容，提取純文本
+  - 使用 LLM 處理頁面內容
+  - 自動保存為 Markdown 文件
+  - 支援一鍵複製到剪貼板
+
+- **互動式總結模式**：
+  - 自動提取網頁主要內容
+  - 生成結構化摘要
+  - 支援互動式問答
+  - 支援流式輸出
+  - 智能對話記憶上下文
+
+兩個專案都致力於提升 Safari 瀏覽器的閱讀體驗，但採用不同的技術實現方案：
+- EisonAI 使用瀏覽器擴展形式，直接整合進 Safari
+- newSafari 採用獨立應用程式方式，通過 Python 實現
+
 ## 許可證
 
 本項目基於 MIT 許可證開源 - 查看 [LICENSE](LICENSE) 文件了解更多信息。
