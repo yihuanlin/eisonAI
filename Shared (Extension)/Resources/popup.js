@@ -121,39 +121,44 @@ function setupSettingsLink() {
 }
 
 function setupStatus() {
-  let icon = document.getElementById("StatusIcon");
   let text = document.getElementById("StatusText");
 
   (async () => {
     let apiURL = await loadData("APIURL", "");
     let apiKey = await loadData("APIKEY", "");
 
-    let newURL = `${apiURL}/models`;
-
     let bool = await setupGPT();
     if (bool) {
-      text.innerHTML = "已設定";
+      text.innerHTML = "";
       try {
-        const response = await fetch(newURL, {
-          headers: {
-            Authorization: "Bearer " + apiKey,
-          },
-        });
+        let response;
+        // Check if using Google Gemini API
+        if (apiURL.includes("generativelanguage.googleapis.com")) {
+          let newURL = `${apiURL}/models?key=${apiKey}`;
+          response = await fetch(newURL);
+        } else {
+          // Default case for OpenAI and others
+          let newURL = `${apiURL}/models`;
+          response = await fetch(newURL, {
+            headers: {
+              Authorization: "Bearer " + apiKey,
+            },
+          });
+        }
 
         if (response.ok) {
           setStatus("normal");
-          text.innerHTML = "通過測試";
         } else {
           const { status, statusText } = response;
           setStatus("error");
-          text.innerHTML = "測試失敗 " + status + statusText;
+          text.innerHTML = "Failed " + status + statusText;
         }
       } catch (error) {
         setStatus("warming");
         text.innerHTML = error;
       }
     } else {
-      text.innerHTML = "請先設定 ChatGPT API";
+      text.innerHTML = "Please setup API";
     }
   })();
 }

@@ -1,10 +1,3 @@
-//
-//  ViewController.swift
-//  Shared (App)
-//
-//  Created by 黃佁媛 on 2024/4/10.
-//
-
 import WebKit
 
 #if os(iOS)
@@ -16,7 +9,7 @@ import SafariServices
 typealias PlatformViewController = NSViewController
 #endif
 
-let extensionBundleIdentifier = "com.qoli.eisonAI.Extension"
+let extensionBundleIdentifier = "com.yhl.summariser.Extension"
 
 class ViewController: PlatformViewController, WKNavigationDelegate, WKScriptMessageHandler {
 

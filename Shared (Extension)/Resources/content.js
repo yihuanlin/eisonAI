@@ -64,22 +64,11 @@ function insertHtml() {
 
   var htmlReadabilityBarCode = `
   <div id="ReadabilityBar" style="display: none;" >
-  <div id="viewBar">
+    <div id="viewBar">
       <a href="javascript:void(0)" id="ReadabilityButton">
-      <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-          d="M0 6.66667C0 2.98477 2.98477 0 6.66667 0H11.1111C14.793 0 17.7778 2.98477 17.7778 6.66667V11.1111C17.7778 14.793 14.793 17.7778 11.1111 17.7778H1.66667C0.746192 17.7778 0 17.0316 0 16.1111V6.66667Z"
-          fill="#FFD86D" />
-      <circle cx="8.88888" cy="7.22225" r="2.77778" stroke="black" stroke-width="1.11111" />
-      <circle cx="16.6666" cy="7.22225" r="2.77778" stroke="black" stroke-width="1.11111" />
-      <path d="M9.44446 6.94458V8.05569" stroke="black" stroke-width="1.11111" stroke-linecap="round" />
-      <path d="M13.4722 6.66675H12.2222" stroke="black" stroke-width="1.11111" stroke-linecap="round" />
-      <path d="M16.1111 6.94458V8.05569" stroke="black" stroke-width="1.11111" stroke-linecap="round" />
-      <path d="M10.5555 12.959V12.959C12.1488 13.2533 13.7949 12.9934 15.22 12.2224V12.2224"
-          stroke="black" stroke-width="1.11111" stroke-linecap="round" />
-  </svg>
+        <img src="https://yhl.ac.cn/icon/202019.png" width="30" height="30" alt="Toolbar Icon">
       </a>
-  </div>
+    </div>
   </div>
   <!-- ReadabilityBar / End  -->
   `;
@@ -133,10 +122,8 @@ function insertHtml() {
 <div id="ReadabilityMessageGroup">
 <div id="ReadabilityFrame" class="ReadabilityStyle morePadding">
     <div id="ReadabilityLoading">
-        <span>Eison · 愛省流君</span>
     </div>
     <div id="response" class="typing"></div>
-    <div id="receiptTitle"></div>
     <div id="receipt"></div>
 </div>
 
@@ -166,7 +153,6 @@ function insertHtml() {
 <!-- ReadabilityBox / End  -->
 </div>
 `;
-
   document.body.insertAdjacentHTML(
     "beforeend",
     htmlReadabilityBarCode + htmlReadabilityBoxFrameCode
@@ -209,7 +195,7 @@ function insertHtml() {
   });
 
   textArea.addEventListener("keydown", function (event) {
-    if (event.keyCode === 13 && !event.shiftKey) {
+    if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault(); // 防止換行
       sendReply();
     }
@@ -329,7 +315,6 @@ function callGPT() {
   let articleText = postProcessText(article.textContent);
   console.log("Content: Article text processed, length:", articleText.length);
 
-  document.querySelector("#receiptTitle").innerHTML = "";
   document.querySelector("#receipt").innerHTML = "";
   document.querySelector("#ReadabilityTitle").innerHTML = article.title;
   document.querySelector(
