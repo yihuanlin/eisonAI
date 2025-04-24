@@ -60,10 +60,6 @@ function addClickListeners() {
 }
 
 //
-function sendRunSummaryMessage() {
-  sendMessageToContent("runSummary");
-  uiFocus(document.getElementById("SendRunSummaryMessage"), 400);
-}
 
 function getHostFromUrl(url) {
   const parsedUrl = new URL(url);
@@ -164,6 +160,7 @@ function setupStatus() {
 }
 
 function mainApp() {
+  sendMessageToContent("runSummary");
   setupButtonBarActions();
   addClickListeners();
   setPlatformClassToBody();
