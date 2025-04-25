@@ -273,8 +273,6 @@ function pushUserMessage(text) {
     content: text,
   };
 
-  console.log("UserMessage / length", text.length);
-
   messagesGroup.push(messageWithRole);
 }
 
@@ -535,7 +533,6 @@ async function apiPostMessage(
       }
 
       if (dataDone) {
-        console.log("#dataDone", dataDone);
         puashAssistantMessage(lastReplyMessage);
 
         // Call callback function when done
