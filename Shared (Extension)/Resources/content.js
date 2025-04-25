@@ -1,6 +1,7 @@
 const MAX_TOKEN = 8000;
 let lastURL = "";
 let APP_MODE = "";
+let currentModel = "";
 
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request) {
@@ -121,8 +122,6 @@ function insertHtml() {
 
 <div id="ReadabilityMessageGroup">
 <div id="ReadabilityFrame" class="ReadabilityStyle morePadding">
-    <div id="ReadabilityLoading">
-    </div>
     <div id="response" class="typing"></div>
     <div id="receipt"></div>
 </div>
@@ -130,6 +129,9 @@ function insertHtml() {
 <div id="ReadabilityMessageButtons">
 <div id="ReadabilityReanswer" class="readabilityMessageButton ReadabilityStyle">
     Reanswer
+</div>
+<div id="ReadabilitySwitchModel" class="readabilityMessageButton ReadabilityStyle">
+    Switch Model
 </div>
 </div>
 <!-- ReadabilityMessageButtons / End -->
@@ -177,6 +179,15 @@ function insertHtml() {
   document
     .querySelector("#ReadabilityReanswer")
     .addEventListener("click", reanswer);
+
+  document
+    .querySelector("#ReadabilitySwitchModel")
+    .addEventListener("click", () => {
+      currentModel = currentModel === API_ADV_MODEL ? API_MODEL : API_ADV_MODEL;
+      document.querySelector(
+        "#ReadabilityHost"
+      ).innerHTML = `${window.location.host} | ${currentModel}`;
+    });
 
   document
     .querySelector("#ReadabilityErrorResend")
@@ -292,7 +303,6 @@ function resetGPT() {
 }
 
 function callGPT() {
-  console.log("Content: Starting callGPT function");
   let article = new Readability(document.cloneNode(true), {}).parse();
 
   if (!article) {
@@ -302,7 +312,6 @@ function callGPT() {
 
   // reset
   if (lastURL != window.location.href) {
-    console.log("Content: URL changed, resetting GPT");
     resetGPT();
   }
 
@@ -313,14 +322,12 @@ function callGPT() {
 
   document.querySelector("#response").innerHTML = "";
   let articleText = postProcessText(article.textContent);
-  console.log("Content: Article text processed, length:", articleText.length);
 
   document.querySelector("#receipt").innerHTML = "";
   document.querySelector("#ReadabilityTitle").innerHTML = article.title;
   document.querySelector(
     "#ReadabilityHost"
-  ).innerHTML = `${window.location.host} / ${API_MODEL}`;
+  ).innerHTML = `${window.location.host} | ${API_MODEL}`;
 
-  console.log("Content: Calling GPT Summary");
   callGPTSummary(articleText);
 }

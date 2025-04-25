@@ -71,6 +71,7 @@ async function setupAPISettings() {
   document.getElementById("APIURL").value = API_URL;
   document.getElementById("APIKEY").value = API_KEY;
   document.getElementById("APIMODEL").value = API_MODEL;
+  document.getElementById("APIADVMODEL").value = API_ADV_MODEL;
   document.getElementById("Prompt").innerText = APP_PromptText;
   document.getElementById("SystemText").innerText = APP_SystemText;
 }
@@ -131,10 +132,12 @@ function saveAPI() {
     let API_URL = document.getElementById("APIURL").value;
     let API_KEY = document.getElementById("APIKEY").value;
     let API_MODEL = document.getElementById("APIMODEL").value;
+    let API_ADV_MODEL = document.getElementById("APIADVMODEL").value;
 
     await saveData("APIURL", API_URL);
     await saveData("APIKEY", API_KEY);
     await saveData("APIMODEL", API_MODEL);
+    await saveData("APIADVMODEL", API_ADV_MODEL);
 
     uiFocus(document.getElementById("SaveAPI"), 400);
   })();

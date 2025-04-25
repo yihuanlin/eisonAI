@@ -71,10 +71,12 @@ function saveAPIConfig() {
     let url = document.querySelector("#APIURL").value;
     let key = document.querySelector("#APIKEY").value;
     let model = document.querySelector("#APIMODEL").value;
+    let advModel = document.querySelector("#APIADVMODEL").value;
 
     await saveData("APIURL", url);
     await saveData("APIKEY", key);
     await saveData("APIMODEL", model);
+    await saveData("APIADVMODEL", advModel);
 
     document.querySelector(
       "#ReadabilityText"
@@ -160,7 +162,6 @@ function setupStatus() {
 }
 
 function mainApp() {
-  sendMessageToContent("runSummary");
   setupButtonBarActions();
   addClickListeners();
   setPlatformClassToBody();
@@ -169,6 +170,7 @@ function mainApp() {
   addMessageListener();
   setupSettingsLink();
   setupStatus();
+  sendMessageToContent("runSummary");
 }
 
 // async ...
