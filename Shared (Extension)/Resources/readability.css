@@ -42,6 +42,7 @@
 }
 
 .readabilityBlurBackgroundBox {
+  display: none;
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
   position: absolute;
@@ -50,13 +51,14 @@
   width: 100vw;
   height: 100vh;
   z-index: 89001;
+  animation: blurIn 0.4s ease forwards;
 }
 
 #ReadabilityBox {
   z-index: 90000;
 
   position: relative;
-  max-width: 460px;
+  max-width: 1200px;
   width: 100vw;
   bottom: 0px;
 
@@ -81,9 +83,7 @@
 
 #ReadabilityBox::-webkit-scrollbar {
   width: 0.1rem;
-  /* 设置滚动条宽度为 0.1rem */
   background-color: transparent;
-  /* 设置滚动条背景颜色为透明 */
 }
 
 .ReadabilityFont {
@@ -94,8 +94,8 @@
 
 .ReadabilityStyle {
   padding: 8px;
-  border-radius: 12px;
-  background-color: rgba(255, 255, 255, 0.98);
+  border-radius: 15px;
+  background-color: rgba(255, 255, 255, 0.85);
   box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.12);
   -webkit-backdrop-filter: blur(2px);
   backdrop-filter: blur(2px);
@@ -187,7 +187,7 @@
 
 .readabilityInsideStyle {
   background: #ebebeb !important;
-  border-radius: 8px !important;
+  border-radius: 12px !important;
   padding: 12px !important;
   box-shadow: none !important;
   display: flex;
@@ -215,6 +215,7 @@
   padding: 0 !important;
   display: block !important;
   word-wrap: break-word;
+  text-align: justify;
 }
 
 .safariExtensionTitle,
@@ -346,6 +347,14 @@
   background-color: rgba(56, 123, 234, 0.85);
 }
 
+.ReadabilityMessageTyping::after {
+  display: inline;
+  content: "...";
+  animation: dotFlashingAnimation 1s infinite;
+}
+
+/* animation */
+
 @keyframes dotFlashingAnimation {
   0% {
     content: ".";
@@ -359,14 +368,6 @@
     content: "...";
   }
 }
-
-.ReadabilityMessageTyping::after {
-  display: inline;
-  content: "...";
-  animation: dotFlashingAnimation 1s infinite;
-}
-
-/* animation */
 
 @keyframes blink {
   50% {
@@ -443,6 +444,18 @@
   100% {
     opacity: 1;
     bottom: 0px;
+  }
+}
+
+@keyframes blurIn {
+  from {
+    -webkit-backdrop-filter: blur(0px);
+    backdrop-filter: blur(0px);
+  }
+
+  to {
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
   }
 }
 

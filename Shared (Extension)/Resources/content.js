@@ -75,9 +75,9 @@ function insertHtml() {
   `;
 
   var htmlReadabilityBoxFrameCode = `
+<div id= "ReadabilityBlurBackgroundBox" class="readabilityBlurBackgroundBox"></div>
 <div id="ReadabilityBoxFrame">
 <div class="readabilityBlurBox"></div>
-<div id= "ReadabilityBlurBackgroundBox" class="readabilityBlurBackgroundBox"></div>
 <div id="ReadabilityBox" class="ReadabilityFont" >
 
 <div id="ReadabilityKeyboard" class="ReadabilityStyle morePadding">
@@ -193,6 +193,53 @@ function insertHtml() {
     .querySelector("#ReadabilityErrorResend")
     .addEventListener("click", resend);
 
+  document
+    .querySelector("#ReadabilityFrame")
+    .addEventListener("click", () => {
+      const responseElem = document.querySelector("#response");
+      if (responseElem && responseElem.innerText) {
+        navigator.clipboard.writeText(responseElem.innerText)
+          .then(() => {
+            const frame = document.querySelector("#ReadabilityFrame");
+            const originalBackgroundColor = frame.style.backgroundColor;
+            frame.style.transition = "background-color 0.1s";
+            frame.style.backgroundColor = "rgba(144, 202, 249, 0.85)";
+            setTimeout(() => {
+              frame.style.backgroundColor = originalBackgroundColor;
+              setTimeout(() => frame.style.transition = "", 100);
+            }, 200);
+          })
+          .catch(err => console.error("Failed to copy text: ", err));
+      }
+    });
+
+  document
+    .querySelector("#ReadabilityMessageGroup")
+    .addEventListener("click", (event) => {
+      const replyElement = event.target.closest(".readabilityReply");
+      if (replyElement) {
+        const text = replyElement.innerText;
+        navigator.clipboard.writeText(text)
+          .then(() => {
+            const originalBackgroundColor = replyElement.style.backgroundColor;
+            replyElement.style.transition = "background-color 0.1s";
+            replyElement.style.backgroundColor = "rgba(144, 202, 249, 0.85)";
+            setTimeout(() => {
+              replyElement.style.backgroundColor = originalBackgroundColor;
+              setTimeout(() => replyElement.style.transition = "", 100);
+            }, 200);
+          })
+          .catch(err => console.error("Failed to copy text: ", err));
+      }
+    });
+
+  document
+    .addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') {
+        hideView();
+      }
+    });
+
   hideID("ReadabilityReanswer");
 
   const textArea = document.getElementById("ReadabilityTextarea");
@@ -286,12 +333,28 @@ function hideClose() {
 function hideView() {
   document.body.style.overflow = "auto";
 
-  document.querySelector("#ReadabilityBoxFrame").style.display = "none";
+  const boxFrame = document.querySelector("#ReadabilityBoxFrame");
+  const blurBackground = document.querySelector("#ReadabilityBlurBackgroundBox");
+
+  boxFrame.style.opacity = '0';
+  boxFrame.style.transition = 'opacity 0.3s';
+  blurBackground.style.opacity = '0';
+  blurBackground.style.transition = 'opacity 0.3s';
+
+  setTimeout(() => {
+    boxFrame.style.display = "none";
+    boxFrame.style.opacity = '1';
+    boxFrame.style.transition = '';
+    blurBackground.style.display = "none";
+    blurBackground.style.opacity = '1';
+    blurBackground.style.transition = '';
+  }, 300);
   if (APP_MODE == "modeMiniIcon") {
     showID("ReadabilityBar", "flex");
   }
 }
 function runSummary() {
+  document.querySelector("#ReadabilityBlurBackgroundBox").style.display = "block";
   document.querySelector("#ReadabilityBoxFrame").style.display = "flex";
   document.querySelector("#ReadabilityBar").style.display = "none";
   document.body.style.overflow = "hidden";

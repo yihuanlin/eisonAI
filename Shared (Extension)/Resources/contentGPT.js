@@ -250,7 +250,7 @@ function getMaxTimestampElem() {
   return maxTimestampDiv;
 }
 
-function puashAssistantMessage(text) {
+function pushAssistantMessage(text) {
   if (text.length <= 0) {
     return;
   }
@@ -304,7 +304,7 @@ async function callGPTSummary(inputText) {
 
     let userText = APP_PromptText + "<" + inputText + ">";
     setupSystemMessage();
-    puashAssistantMessage(assistantText);
+    pushAssistantMessage(assistantText);
     pushUserMessage(userText);
 
     await apiPostMessage(responseElem, function () {
@@ -533,7 +533,7 @@ async function apiPostMessage(
       }
 
       if (dataDone) {
-        puashAssistantMessage(lastReplyMessage);
+        pushAssistantMessage(lastReplyMessage);
 
         // Call callback function when done
         if (callback && typeof callback === "function") {
@@ -612,8 +612,6 @@ function typeSentence(sentence, elementReference) {
 
 function setupSummary() {
   let resultText = document.getElementById("response").innerHTML;
-
-  document.getElementById("response").innerHTML = "";
   document.getElementById("receipt").innerHTML = formatMarkdown(
     marked.parse(postProcessText(excludeSummary(resultText)))
   );
@@ -644,7 +642,10 @@ function formatMarkdown(inputString) {
 
 function hideID(idName) {
   try {
-    document.querySelector("#" + idName).style.display = "none";
+    const element = document.querySelector("#" + idName);
+    if (element) {
+      element.style.setProperty('display', 'none', 'important');
+    }
   } catch (error) { }
 }
 
