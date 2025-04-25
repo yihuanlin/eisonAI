@@ -63,98 +63,87 @@ function insertHtml() {
     return;
   }
 
-  var htmlReadabilityBarCode = `
-  <div id="ReadabilityBar" style="display: none;" >
-    <div id="viewBar">
-      <a href="javascript:void(0)" id="ReadabilityButton">
-        <img src="https://yhl.ac.cn/icon/202019.png" width="30" height="30" alt="Toolbar Icon">
-      </a>
-    </div>
+  var htmlReadabilityBarCode = `<div id="ReadabilityBar" style="display: none;" >
+  <div id="viewBar">
+    <a href="javascript:void(0)" id="ReadabilityButton">
+      <img src="https://yhl.ac.cn/icon/202019.png" width="30" height="30" alt="Toolbar Icon">
+    </a>
   </div>
-  <!-- ReadabilityBar / End  -->
-  `;
+</div>`;
 
-  var htmlReadabilityBoxFrameCode = `
-<div id= "ReadabilityBlurBackgroundBox" class="readabilityBlurBackgroundBox"></div>
-<div id="ReadabilityBoxFrame">
+  var htmlReadabilityBoxFrameCode = `<div id="ReadabilityBlurBackgroundBox" class="readabilityBlurBackgroundBox"></div>
 <div class="readabilityBlurBox"></div>
-<div id="ReadabilityBox" class="ReadabilityFont" >
+<div id="ReadabilityBoxFrame">
+    <div id="ReadabilityBox" class="ReadabilityFont">
 
-<div id="ReadabilityKeyboard" class="ReadabilityStyle morePadding">
-<div class="readabilityInput fixMorePadding">
-    <textarea id="ReadabilityTextarea" placeholder="Reply (Enter for Send)" rows="1" class="readabilityInsideStyle"></textarea>
+        <div id="ReadabilityKeyboard" class="ReadabilityStyle morePadding">
+            <div class="readabilityInput fixMorePadding">
+                <textarea id="ReadabilityTextarea" placeholder="Reply (Enter for Send)" rows="1"
+                    class="readabilityInsideStyle"></textarea>
 
-    <div id="ReadabilityClose" class="readabilityCursorPointer readabilityInsideStyle">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 4L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round" data-noir-inline-color="">
-            </path>
-            <path d="M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round" data-noir-inline-color="">
-            </path>
-        </svg>
+                <div id="ReadabilityClose" class="readabilityCursorPointer readabilityInsideStyle">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 4L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" data-noir-inline-color="">
+                        </path>
+                        <path d="M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" data-noir-inline-color="">
+                        </path>
+                    </svg>
+                </div>
+
+                <div id="ReadabilitySend" class="readabilityCursorPointer readabilityInsideStyle" style="display: none">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 14 21 3"></path>
+                        <path d="m21 3-6.5 18a.55.55 0 0 1-1 0L10 14l-7-3.5a.55.55 0 0 1 0-1L21 3Z"></path>
+                    </svg>
+                </div>
+
+                <div id="ReadabilityErrorResend"
+                    class="readabilityCursorPointer readabilityInsideStyle readabilityError" style="display: none;">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z"></path>
+                        <path d="M12 8h.01"></path>
+                        <path d="M11 12h1v4h1"></path>
+                    </svg>
+
+                    <span>Retry</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="ReadabilityMessageGroup">
+            <div id="ReadabilityFrame" class="ReadabilityStyle morePadding">
+                <div id="response" class="typing"></div>
+                <div id="receipt"></div>
+            </div>
+
+            <div id="ReadabilityMessageButtons">
+                <div id="ReadabilityReanswer" class="readabilityMessageButton ReadabilityStyle">
+                    Reanswer
+                </div>
+                <div id="ReadabilitySwitchModel" class="readabilityMessageButton ReadabilityStyle">
+                    Switch Model
+                </div>
+            </div>
+
+        </div>
+
+        <div id="ReadabilityUserinfo" class="ReadabilityStyle morePadding">
+            <div class="safariExtensionUserInfo">
+                <p class="safariExtensionTitle" id="ReadabilityTitle">Title</p>
+                <p class="safariExtensionHost readabilityTips" id="ReadabilityHost">
+                    www
+                </p>
+            </div>
+        </div>
+
+        <div style="padding-top: 150px;"></div>
+
     </div>
-
-    <div id="ReadabilitySend" class="readabilityCursorPointer readabilityInsideStyle" style="display: none">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round"
-            stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 14 21 3"></path>
-            <path d="m21 3-6.5 18a.55.55 0 0 1-1 0L10 14l-7-3.5a.55.55 0 0 1 0-1L21 3Z"></path>
-        </svg>
-    </div>
-
-    <div id="ReadabilityErrorResend" class="readabilityCursorPointer readabilityInsideStyle readabilityError"
-    style="display: none;">
-    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round"
-        stroke-linejoin="round" stroke-width="3" viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z"></path>
-        <path d="M12 8h.01"></path>
-        <path d="M11 12h1v4h1"></path>
-    </svg>
-
-    <span>Retry</span>
-    </div>
-</div>
-</div>
-<!-- ReadabilityKeyboard / End  -->
-
-<div id="ReadabilityMessageGroup">
-<div id="ReadabilityFrame" class="ReadabilityStyle morePadding">
-    <div id="response" class="typing"></div>
-    <div id="receipt"></div>
-</div>
-
-<div id="ReadabilityMessageButtons">
-<div id="ReadabilityReanswer" class="readabilityMessageButton ReadabilityStyle">
-    Reanswer
-</div>
-<div id="ReadabilitySwitchModel" class="readabilityMessageButton ReadabilityStyle">
-    Switch Model
-</div>
-</div>
-<!-- ReadabilityMessageButtons / End -->
-
-</div>
-<!-- ReadabilityMessageGroup / End  -->
-
-<div id="ReadabilityUserinfo" class="ReadabilityStyle morePadding">
-<div class="safariExtensionUserInfo">
-    <p class="safariExtensionTitle" id="ReadabilityTitle">Title</p>
-    <p class="safariExtensionHost readabilityTips" id="ReadabilityHost">
-        www
-    </p>
-</div>
-</div>
-<!-- ReadabilityUserinfo / End  -->
-
-<div style="padding-top: 150px;" ></div>
-
-</div>
-<!-- ReadabilityBox / End  -->
-</div>
-`;
+</div>`;
   document.body.insertAdjacentHTML(
     "beforeend",
     htmlReadabilityBarCode + htmlReadabilityBoxFrameCode
@@ -332,14 +321,16 @@ function hideClose() {
 
 function hideView() {
   document.body.style.overflow = "auto";
-
   const boxFrame = document.querySelector("#ReadabilityBoxFrame");
   const blurBackground = document.querySelector("#ReadabilityBlurBackgroundBox");
+  const blurBox = document.querySelector(".readabilityBlurBox");
 
   boxFrame.style.opacity = '0';
   boxFrame.style.transition = 'opacity 0.3s';
   blurBackground.style.opacity = '0';
   blurBackground.style.transition = 'opacity 0.3s';
+  blurBox.style.opacity = '0';
+  blurBox.style.transition = 'opacity 0.3s';
 
   setTimeout(() => {
     boxFrame.style.display = "none";
@@ -348,13 +339,18 @@ function hideView() {
     blurBackground.style.display = "none";
     blurBackground.style.opacity = '1';
     blurBackground.style.transition = '';
+    blurBox.style.display = "none";
+    blurBox.style.opacity = '1';
+    blurBox.style.transition = '';
   }, 300);
   if (APP_MODE == "modeMiniIcon") {
     showID("ReadabilityBar", "flex");
   }
 }
+
 function runSummary() {
   document.querySelector("#ReadabilityBlurBackgroundBox").style.display = "block";
+  document.querySelector(".readabilityBlurBox").style.display = "block";
   document.querySelector("#ReadabilityBoxFrame").style.display = "flex";
   document.querySelector("#ReadabilityBar").style.display = "none";
   document.body.style.overflow = "hidden";

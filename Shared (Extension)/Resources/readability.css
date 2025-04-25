@@ -2,19 +2,12 @@
 
 #ReadabilityBoxFrame {
   z-index: 90000;
-
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
   bottom: 0;
-
   display: none;
-
-  height: 100vh;
-
   animation: slideIn 0.8s;
-
-  width: 100vw;
   justify-content: center;
 }
 
@@ -23,6 +16,7 @@
 }
 
 .readabilityBlurBox {
+  display: none;
   -webkit-mask-image: linear-gradient(to top,
       rgba(0, 0, 0, 0),
       rgba(0, 0, 0, 1),
@@ -39,6 +33,7 @@
   width: 100%;
   height: 80px;
   z-index: 90001;
+  animation: fadeIn 0.4s ease forwards;
 }
 
 .readabilityBlurBackgroundBox {
@@ -56,21 +51,16 @@
 
 #ReadabilityBox {
   z-index: 90000;
-
   position: relative;
   max-width: 1200px;
-  width: 100vw;
+  width: 90vw;
   bottom: 0px;
-
   margin-top: auto;
   margin-bottom: -32px;
-
   display: flex;
   flex-direction: column-reverse;
   padding: 32px;
-
   max-height: calc(100vh - 32px);
-
   scroll-behavior: smooth;
   overflow-x: hidden;
   overflow-y: auto;
@@ -116,17 +106,13 @@
   font-style: normal;
   text-align: left;
   color: #444;
-
   font-size: 13px;
   line-height: 24px;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-
   animation: fadeIn 0.8s;
-
   white-space: pre-line;
-
   flex-direction: column;
 }
 
@@ -155,7 +141,6 @@
   display: flex;
   justify-content: left;
   align-items: left;
-
   gap: 8px;
 }
 
@@ -299,15 +284,12 @@
 
 #ReadabilityBar #viewBar a {
   text-align: center;
-
   font-family: system-ui;
   font-style: normal;
   font-weight: 590;
   font-size: 16px;
-
   color: rgba(0, 0, 0, 0.75);
   text-decoration: none;
-
   line-height: 1px;
   border: none;
   width: 30px !important;
@@ -331,12 +313,10 @@
   align-items: center;
   padding: 0px;
   gap: 10px;
-
   flex: none;
   order: 2;
   align-self: stretch;
   flex-grow: 0;
-
   font-size: 14px;
 }
 
