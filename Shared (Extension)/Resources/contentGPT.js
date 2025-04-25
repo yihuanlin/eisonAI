@@ -31,7 +31,7 @@ async function setupGPT() {
     console.error("SetupGPT: Failed - Missing API URL");
     return false;
   }
-  
+
   return true;
 }
 
@@ -187,20 +187,86 @@ async function apiPostMessage(
   try {
     hideID("ReadabilityErrorResend");
 
+    // Handle different API endpoints
     let fetchURL = `${appAPIUrl}/chat/completions`;
+    let headers = {
+      Authorization: "Bearer " + appAPIKey,
+      "Content-Type": "application/json"
+    };
+    let requestBody = {};
 
-    const response = await fetch(fetchURL, {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + appAPIKey,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
+    // Check if using Gemini API
+    if (appAPIUrl.includes('generativelanguage.googleapis.com')) {
+      // Adjust for Gemini API format
+      fetchURL = `${appAPIUrl}/models/${appAPIModel}:streamGenerateContent`;
+      headers = {
+        "Content-Type": "application/json",
+        "x-goog-api-key": appAPIKey
+      };
+
+      // Convert message format for Gemini
+      // Filter out system messages and map roles
+      let geminiContents = messagesGroup
+        .filter(msg => msg.role !== 'system') // Remove system message
+        .map(msg => ({
+          role: msg.role === 'assistant' ? 'model' : msg.role, // Convert assistant to model
+          parts: [{ text: msg.content }]
+        }));
+
+      // Gemini requires the conversation history to end with a 'user' role message.
+      // If the last message is 'model', remove it.
+      if (geminiContents.length > 0 && geminiContents[geminiContents.length - 1].role === 'model') {
+        geminiContents.pop(); // Remove the last message if it's from the model
+      }
+
+      // Ensure not sending empty contents after filtering
+      if (geminiContents.length === 0) {
+        // Add a test user message if contents are empty
+        geminiContents.push({
+          role: 'user',
+          parts: [{ text: 'Hello' }]
+        });
+        console.log("Added test message to empty Gemini contents");
+      }
+
+      // Ensure the last message is from the user (Gemini requirement)
+      if (geminiContents.length > 0 && geminiContents[geminiContents.length - 1].role === 'model') {
+        // Add a dummy user message if the last message is from the model
+        geminiContents.push({
+          role: 'user',
+          parts: [{ text: 'Please continue' }]
+        });
+        console.log("Added continuation prompt since last message was from model");
+      }
+
+      requestBody = {
+        contents: geminiContents,
+        tools: [{
+          google_search: {}
+        }],
+        generationConfig: {
+          temperature: 0.5
+        }
+      };
+    } else {
+      // Standard OpenAI/compatible API format
+      requestBody = {
         stream: true,
         model: appAPIModel,
         messages: messagesGroup,
-        temperature: 0.1,
-      }),
+        temperature: 0.5,
+      };
+
+      // Add plugins if using OpenRouter
+      if (appAPIUrl.startsWith('https://openrouter.ai')) {
+        requestBody.plugins = [{ "id": "web" }];
+      }
+    }
+
+    const response = await fetch(fetchURL, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(requestBody),
     });
 
     const reader = response.body
@@ -212,47 +278,91 @@ async function apiPostMessage(
       return;
     }
 
+    let geminiBuffer = ''; // Buffer for accumulating Gemini response data
+
     while (true) {
       // eslint-disable-next-line no-await-in-loop
       const { value, done } = await reader.read();
       if (done) break;
       let dataDone = false;
-      const arr = value.split("\n");
 
-      arr.forEach((data) => {
-        if (data.length === 0) return; // ignore empty message
-        if (data.startsWith(":")) return; // ignore sse comment message
-        if (data.startsWith("id")) return; // 
+      // Handle different API formats differently
+      if (appAPIUrl.includes('generativelanguage.googleapis.com')) {
+        // Gemini streaming format handling
+        geminiBuffer += value;
 
-        if (!data.startsWith("data")) {
-          try {
-            let errorJSON = JSON.parse(data);
-            typeSentence("\nError: " + errorJSON.error.message, responseElem);
+        // Process complete JSON objects in the buffer
+        try {
+          // Look for complete JSON objects that might be in the buffer
+          const jsonObjects = extractJsonObjects(geminiBuffer);
 
-            showID("ReadabilityErrorResend", "flex");
+          for (const jsonData of jsonObjects) {
+            if (jsonData.candidates && jsonData.candidates[0] && jsonData.candidates[0].content) {
+              const content = jsonData.candidates[0].content;
+
+              if (content.parts && content.parts.length > 0) {
+                content.parts.forEach(part => {
+                  if (part.text) {
+                    typeSentence(part.text, responseElem);
+                  }
+                });
+              }
+
+              if (jsonData.candidates[0].finishReason === "STOP") {
+                dataDone = true;
+              }
+            }
+          }
+
+          // Clean buffer after processing
+          if (jsonObjects.length > 0) {
+            const lastJsonEndPos = geminiBuffer.lastIndexOf('}') + 1;
+            geminiBuffer = geminiBuffer.substring(lastJsonEndPos);
+          }
+        } catch (error) {
+          console.error("Error processing Gemini streaming response:", error);
+        }
+      } else {
+        // OpenAI-like streaming format (line-based)
+        const arr = value.split("\n");
+
+        arr.forEach((data) => {
+          if (data.length === 0) return; // ignore empty message
+          if (data.startsWith(":")) return; // ignore sse comment message
+          if (data.startsWith("id")) return; // 
+
+          if (!data.startsWith("data")) {
+            try {
+              let errorJSON = JSON.parse(data);
+              typeSentence("\nError: " + (errorJSON.error?.message || JSON.stringify(errorJSON)), responseElem);
+
+              showID("ReadabilityErrorResend", "flex");
+              return;
+            } catch (error) { }
+          }
+
+          if (data === "data: [DONE]") {
+            dataDone = true;
             return;
-          } catch (error) {}
-        }
+          }
 
-        if (data === "data: [DONE]") {
-          dataDone = true;
-          return;
-        }
+          try {
+            const jsonData = JSON.parse(data.substring(6));
+            let choice = jsonData.choices[0];
+            let token = choice.delta?.content;
 
-        let choice = JSON.parse(data.substring(6)).choices[0];
-        let token = choice.delta.content;
+            if (token !== undefined) {
+              typeSentence(token, responseElem);
+            }
 
-        if (token === undefined) {
-          return;
-        }
-
-        if (choice.finish_reason == "stop") {
-          token = token;
-          dataDone = true;
-        }
-
-        typeSentence(token, responseElem);
-      });
+            if (choice.finish_reason === "stop") {
+              dataDone = true;
+            }
+          } catch (error) {
+            console.error("Error parsing OpenAI streaming response:", error);
+          }
+        });
+      }
 
       if (dataDone) {
         console.log("#dataDone", dataDone);
@@ -264,6 +374,48 @@ async function apiPostMessage(
         }
         break;
       }
+    }
+
+    // Helper function to extract complete JSON objects from a string
+    function extractJsonObjects(str) {
+      const results = [];
+      let startPos = str.indexOf("{");
+
+      while (startPos !== -1) {
+        try {
+          // Find a potential complete JSON object
+          let openBraces = 0;
+          let endPos = startPos;
+
+          for (let i = startPos; i < str.length; i++) {
+            if (str[i] === '{') openBraces++;
+            else if (str[i] === '}') openBraces--;
+
+            if (openBraces === 0) {
+              endPos = i + 1;
+              break;
+            }
+          }
+
+          if (openBraces !== 0) {
+            // Incomplete JSON, wait for more data
+            break;
+          }
+
+          // Extract the JSON string and parse it
+          const jsonStr = str.substring(startPos, endPos);
+          const jsonObj = JSON.parse(jsonStr);
+          results.push(jsonObj);
+
+          // Move to the next potential JSON object
+          startPos = str.indexOf("{", endPos);
+        } catch (e) {
+          // If parsing fails, move to the next opening brace
+          startPos = str.indexOf("{", startPos + 1);
+        }
+      }
+
+      return results;
     }
 
     if (!response.ok) {
@@ -344,7 +496,7 @@ function hideLoading() {
 function hideID(idName) {
   try {
     document.querySelector("#" + idName).style.display = "none";
-  } catch (error) {}
+  } catch (error) { }
 }
 
 function showID(idName, display) {
@@ -353,7 +505,7 @@ function showID(idName, display) {
   }
   try {
     document.querySelector("#" + idName).style.display = display;
-  } catch (error) {}
+  } catch (error) { }
 }
 
 function uiFocus(responseElem, delayMS) {
