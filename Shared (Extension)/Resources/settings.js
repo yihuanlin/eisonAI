@@ -93,11 +93,6 @@ function checkAPI() {
       return;
     }
 
-    if (!API_URL.endsWith("/v1")) {
-      callbackText.innerText = "Structure required. eg. https://example.com/v1";
-      return;
-    }
-
     if (API_URL == "https://example.com/v1") {
       callbackText.innerText = "example.com is just an example.";
       return;

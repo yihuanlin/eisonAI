@@ -128,17 +128,24 @@ function setupStatus() {
     let apiURL = await loadData("APIURL", "");
     let apiKey = await loadData("APIKEY", "");
 
-    let newURL = `${apiURL}/models`;
-
     let bool = await setupGPT();
     if (bool) {
       text.innerHTML = "已設定";
       try {
-        const response = await fetch(newURL, {
-          headers: {
-            Authorization: "Bearer " + apiKey,
-          },
-        });
+        let response;
+        // Check if using Google Gemini API
+        if (apiURL.includes("generativelanguage.googleapis.com")) {
+          let newURL = `${apiURL}/models?key=${apiKey}`;
+          response = await fetch(newURL);
+        } else {
+          // Default case for OpenAI and others
+          let newURL = `${apiURL}/models`;
+          response = await fetch(newURL, {
+            headers: {
+              Authorization: "Bearer " + apiKey,
+            },
+          });
+        }
 
         if (response.ok) {
           setStatus("normal");
