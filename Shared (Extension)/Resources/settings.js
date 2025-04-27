@@ -94,11 +94,6 @@ function checkAPI() {
       return;
     }
 
-    if (API_URL == "https://example.com/v1") {
-      callbackText.innerText = "example.com is just an example.";
-      return;
-    }
-
     callbackText.innerText = "";
 
     messagesGroup = [];

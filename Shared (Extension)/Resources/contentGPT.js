@@ -339,7 +339,7 @@ async function apiPostMessage(
     appAPIModel = API_MODEL;
   }
 
-  appAPIModel = currentModel.length > 0 ? currentModel : appAPIModel;
+  appAPIModel = (typeof currentModel !== 'undefined' && currentModel.length > 0) ? currentModel : appAPIModel;
 
   if (!appAPIUrl) {
     console.error("API Post - Missing API URL");

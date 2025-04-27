@@ -2,6 +2,7 @@ const MAX_TOKEN = 8000;
 let lastURL = "";
 let APP_MODE = "";
 let currentModel = "";
+let articleText = "";
 
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request) {
@@ -197,7 +198,11 @@ function insertHtml() {
             const frame = document.querySelector("#ReadabilityFrame");
             const originalBackgroundColor = frame.style.backgroundColor;
             frame.style.transition = "background-color 0.1s";
-            frame.style.backgroundColor = "rgba(144, 202, 249, 0.85)";
+
+            const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const highlightColor = isDarkMode ? "rgba(14, 36, 60, 0.85)" : "rgba(144, 202, 249, 0.85)";
+
+            frame.style.backgroundColor = highlightColor;
             setTimeout(() => {
               frame.style.backgroundColor = originalBackgroundColor;
               setTimeout(() => frame.style.transition = "", 100);
@@ -217,13 +222,40 @@ function insertHtml() {
           .then(() => {
             const originalBackgroundColor = replyElement.style.backgroundColor;
             replyElement.style.transition = "background-color 0.1s";
-            replyElement.style.backgroundColor = "rgba(144, 202, 249, 0.85)";
+
+            const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const highlightColor = isDarkMode ? "rgba(14, 36, 60, 0.85)" : "rgba(144, 202, 249, 0.85)";
+
+            replyElement.style.backgroundColor = highlightColor;
             setTimeout(() => {
               replyElement.style.backgroundColor = originalBackgroundColor;
               setTimeout(() => replyElement.style.transition = "", 100);
             }, 200);
           })
           .catch(err => console.error("Failed to copy text: ", err));
+      }
+    });
+
+  document
+    .querySelector("#ReadabilityUserinfo")
+    .addEventListener("click", function () {
+      if (articleText && articleText.trim() !== "") {
+        navigator.clipboard.writeText(articleText)
+          .then(() => {
+            const userInfo = document.querySelector("#ReadabilityUserinfo");
+            const originalBackgroundColor = userInfo.style.backgroundColor;
+            userInfo.style.transition = "background-color 0.1s";
+
+            const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const highlightColor = isDarkMode ? "rgba(14, 36, 60, 0.85)" : "rgba(144, 202, 249, 0.85)";
+
+            userInfo.style.backgroundColor = highlightColor;
+            setTimeout(() => {
+              userInfo.style.backgroundColor = originalBackgroundColor;
+              setTimeout(() => userInfo.style.transition = "", 100);
+            }, 200);
+          })
+          .catch(err => console.error("Failed to copy article text: ", err));
       }
     });
 
@@ -385,7 +417,7 @@ function callGPT() {
   }
 
   document.querySelector("#response").innerHTML = "";
-  let articleText = postProcessText(article.textContent);
+  articleText = postProcessText(article.textContent);
 
   document.querySelector("#receipt").innerHTML = "";
   document.querySelector("#ReadabilityTitle").innerHTML = article.title;
