@@ -21,8 +21,12 @@
         "contentMarked.js",
         "content.js"
       ],
-      "css": ["readability.css"],
-      "matches": ["<all_urls>"]
+      "css": [
+        "readability.css"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
     }
   ],
   "action": {
@@ -36,11 +40,20 @@
       "72": "images/toolbar-icon-72.png"
     }
   },
-  "permissions": ["activeTab", "nativeMessaging", "storage"],
+  "permissions": [
+    "activeTab",
+    "nativeMessaging",
+    "storage"
+  ],
   "web_accessible_resources": [
     {
-      "resources": ["settings.html"],
-      "matches": ["<all_urls>"]
+      "resources": [
+        "images/icon.png",
+        "settings.html"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
     }
   ]
 }

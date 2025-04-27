@@ -66,7 +66,7 @@ function insertHtml() {
   var htmlReadabilityBarCode = `<div id="ReadabilityBar" style="display: none;" >
   <div id="viewBar">
     <a href="javascript:void(0)" id="ReadabilityButton">
-      <img src="https://yhl.ac.cn/icon/202019.png" width="30" height="30" alt="Toolbar Icon">
+      <img src="${browser.runtime.getURL('images/icon.png')}" width="30" height="30" alt="Toolbar Icon">
     </a>
   </div>
 </div>`;
@@ -126,6 +126,11 @@ function insertHtml() {
                 </div>
                 <div id="ReadabilitySwitchModel" class="readabilityMessageButton ReadabilityStyle">
                     Switch Model
+                </div>
+                <div id="ReadabilitySettings" class="readabilityMessageButton ReadabilityStyle">
+                    <a href="${browser.runtime.getURL('settings.html')}" target="_blank">
+                        Settings
+                    </a>
                 </div>
             </div>
 

@@ -7,7 +7,7 @@
   transform: translateX(-50%);
   bottom: 0;
   display: none;
-  animation: slideIn 0.8s;
+  animation: slideIn 0.5s;
   justify-content: center;
 }
 
@@ -331,6 +331,16 @@
   display: inline;
   content: "...";
   animation: dotFlashingAnimation 1s infinite;
+}
+
+#ReadabilitySettings a {
+  text-decoration: none;
+  color: white;
+}
+
+#ReadabilitySettings a:hover,
+#ReadabilitySettings a:focus {
+  text-decoration: none;
 }
 
 /* animation */
