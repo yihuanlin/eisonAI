@@ -10,7 +10,11 @@
 *.dSYM.zip
 *.dSYM
 
-
+# Xcode User Data
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
 
 ## Playgrounds
 timeline.xctimeline
