@@ -1,33 +1,37 @@
+// SafariWebExtensionHandler.swift
+
 import SafariServices
 import os.log
 
 class SafariWebExtensionHandler: NSObject, NSExtensionRequestHandling {
-    // Use FocusStatusMonitor instead of the NewTabHandler
+    // Assuming FocusStatusMonitor is correctly defined (reading from UserDefaults)
     private let focusMonitor = FocusStatusMonitor()
     private let logger = Logger(subsystem: "com.yhl.summariser.Extension", category: "ExtensionHandler")
-    
+
     override init() {
         super.init()
-        
-        // Register for focus mode change notifications
+        // Observe the notification posted by FocusStatusMonitor (when it detects changes in UserDefaults)
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(handleFocusModeChange(_:)),
-            name: NSNotification.Name("FocusStatusDidChange"),
-            object: nil
+            name: .FocusStatusDidChange, // Use the defined notification name
+            object: nil // Observe notifications from any object posting this name
         )
-        
-        logger.info("SafariWebExtensionHandler initialized and listening for focus changes")
+        logger.info("SafariWebExtensionHandler initialized and observing FocusStatusDidChange.")
     }
-    
+
     deinit {
-        NotificationCenter.default.removeObserver(self)
+        // Always unregister observers
+        NotificationCenter.default.removeObserver(self, name: .FocusStatusDidChange, object: nil)
+        logger.info("SafariWebExtensionHandler deinitialized.")
     }
-    
+
+    // Handle requests FROM the background script
     func beginRequest(with context: NSExtensionContext) {
         let request = context.inputItems.first as? NSExtensionItem
 
         let profile: UUID?
+        // ... (profile and message extraction code remains the same)
         if #available(iOS 17.0, macOS 14.0, *) {
             profile = request?.userInfo?[SFExtensionProfileKey] as? UUID
         } else {
@@ -41,111 +45,85 @@ class SafariWebExtensionHandler: NSObject, NSExtensionRequestHandling {
             message = request?.userInfo?["message"]
         }
 
+
         logger.info("Received message from background script: \(String(describing: message)) (profile: \(profile?.uuidString ?? "none"))")
 
-        // Prepare response message
-        var responseMessage: [String: Any] = ["received": true]
-        
-        if let messageDict = message as? [String: Any] {
-            if let action = messageDict["action"] as? String {
-                switch action {
-                // Update focus mode from system
-                case "updateFocusMode":
-                    if let mode = messageDict["mode"] as? String {
-                        focusMonitor.updateFocusMode(mode)
-                        responseMessage["success"] = true
-                        responseMessage["focusMode"] = mode
-                        responseMessage["focusFunction"] = getFunctionNameForMode(mode)
-                        logger.info("Focus mode updated to: \(mode)")
-                    } else {
-                        responseMessage["success"] = false
-                        responseMessage["error"] = "No mode provided"
-                    }
-                    
-                // Request current focus mode
-                case "getCurrentFocusMode":
-                    let currentMode = focusMonitor.getCurrentFocusMode()
-                    responseMessage["success"] = true
-                    responseMessage["focusMode"] = currentMode
-                    responseMessage["focusFunction"] = getFunctionNameForMode(currentMode)
-                    logger.info("Returning current focus mode: \(currentMode)")
-                    
-                default:
-                    logger.info("Unknown action: \(action)")
-                    responseMessage["success"] = false
-                    responseMessage["error"] = "Unknown action"
-                }
-            } else {
-                logger.info("No action specified in message")
+        var responseMessage: [String: Any] = ["received": true] // Base response
+
+        // Safely cast message and action
+        if let messageDict = message as? [String: Any], let action = messageDict["action"] as? String {
+            logger.info("Processing action: \(action)")
+            switch action {
+            case "getCurrentFocusMode":
+                // Get the mode directly from the monitor (which reads from UserDefaults)
+                let currentMode = focusMonitor.getCurrentFocusMode()
+                // Use the helper function from the focusMonitor instance
+                let functionName = focusMonitor.getFunctionNameForMode(currentMode)
+                responseMessage["success"] = true
+                responseMessage["focusMode"] = currentMode
+                responseMessage["focusFunction"] = functionName
+                logger.info("Responding to getCurrentFocusMode with: \(currentMode) (\(functionName))")
+
+            // **** REMOVED THE "updateFocusMode" CASE ****
+            // case "updateFocusMode":
+            //     // THIS BLOCK IS REMOVED because FocusStatusMonitor no longer has updateFocusMode
+            //     // The state is now driven by the main app writing to UserDefaults.
+            //     // ... (code that caused the error was here) ...
+
+            default:
                 responseMessage["success"] = false
-                responseMessage["error"] = "No action specified"
+                responseMessage["error"] = "Unknown action: \(action)"
+                logger.warning("Received unknown action: \(action)")
             }
         } else {
-            logger.info("Message is not a dictionary")
             responseMessage["success"] = false
-            responseMessage["error"] = "Invalid message format"
+            responseMessage["error"] = "Invalid message format or missing action"
+            logger.error("Received invalid message format or missing action: \(String(describing: message))")
         }
 
-        // Create and send response
+        // Send the response back to the background script
         let response = NSExtensionItem()
-        
+        // ... (response sending code remains the same)
         if #available(iOS 17.0, macOS 14.0, *) {
             response.userInfo = [ SFExtensionMessageKey: responseMessage ]
         } else {
             response.userInfo = [ "message": responseMessage ]
         }
+        context.completeRequest(returningItems: [response], completionHandler: nil)
+        logger.info("Completed request processing for action: \((message as? [String: Any])?["action"] as? String ?? "unknown").")
+    }
 
-        context.completeRequest(returningItems: [ response ], completionHandler: nil)
-    }
-    
-    // Helper method to get function name for a focus mode
-    private func getFunctionNameForMode(_ mode: String) -> String {
-        switch mode {
-        case "Do Not Disturb": return "activateDoNotDisturb"
-        case "Work": return "activateWorkMode"
-        case "Personal": return "activatePersonalMode"
-        case "Sleep": return "activateSleepMode"
-        case "Focused": return "activateFocusedMode"
-        default: return "activateNormalMode"
-        }
-    }
-    
+    // Handle notifications ABOUT focus mode changes (triggered by FocusStatusMonitor's timer)
     @objc private func handleFocusModeChange(_ notification: Notification) {
-        if let mode = notification.userInfo?["mode"] as? String {
-            logger.info("Focus mode changed notification received: \(mode)")
-            
-            #if os(macOS)
-            // Try multiple message formats for better compatibility
-            let functionName = getFunctionNameForMode(mode)
-            
-            // Format 1: Standard message format
-            SFSafariApplication.dispatchMessage(
-                withName: "focusChanged",
-                toExtensionWithIdentifier: "com.yhl.summariser.Extension",
-                userInfo: [
-                    "mode": mode,
-                    "functionName": functionName
-                ]
-            )
-            
-            // Format 2: Try action-based format that background.js might expect
-            SFSafariApplication.getActiveWindow { window in
-                window?.getActiveTab { tab in
-                    tab?.getActivePage { page in
-                        page?.dispatchMessageToScript(
-                            withName: "message",
-                            userInfo: [
-                                "action": "focusChanged",
-                                "focusMode": mode,
-                                "focusFunction": functionName
-                            ]
-                        )
-                    }
-                }
-            }
-            
-            logger.info("Dispatched focus change to background script using multiple formats: \(mode)")
-            #endif
+        // ... (this function remains largely the same, dispatching the detected change)
+        guard let mode = notification.userInfo?["mode"] as? String else {
+            logger.warning("Received FocusStatusDidChange notification with missing/invalid mode information.")
+            return
         }
+
+        logger.info("Received FocusStatusDidChange notification: \(mode). Dispatching to background script.")
+        let functionName = focusMonitor.getFunctionNameForMode(mode)
+
+        #if os(macOS)
+        let messageName = "focusChanged"
+        let userInfoPayload: [String: Any] = [
+            "mode": mode,
+            "functionName": functionName
+        ]
+
+        SFSafariApplication.dispatchMessage(
+            withName: messageName,
+            toExtensionWithIdentifier: "com.yhl.summariser.Extension", // ** VERIFY YOUR BUNDLE ID **
+            userInfo: userInfoPayload
+        ) { error in
+            if let error = error {
+                self.logger.error("Error dispatching '\(messageName)' message to background script: \(error.localizedDescription)")
+            } else {
+                self.logger.info("Successfully dispatched '\(messageName)' message for mode: \(mode)")
+            }
+        }
+        #else
+        logger.info("Focus change detected on iOS: \(mode). (Dispatch logic primarily for macOS)")
+        #endif
     }
 }

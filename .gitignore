@@ -4,13 +4,6 @@
 *.app
 *.app.dSYM.zip
 
-# Xcode
-## User settings
-xcuserdata/
-*.xcuserstate
-*.xcscmblueprint
-*.xccheckout
-
 ## Obj-C/Swift specific
 *.hmap
 *.ipa
