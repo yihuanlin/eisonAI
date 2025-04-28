@@ -1,1 +1,0 @@
-com.yhl.summariser.Extension

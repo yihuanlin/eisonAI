@@ -4,6 +4,9 @@
   "name": "__MSG_extension_name__",
   "description": "__MSG_extension_description__",
   "version": "1.0",
+  "chrome_settings_overrides": {
+    "newtab": "home/index.html"
+  },
   "icons": {
     "48": "images/icon-48.png",
     "128": "images/icon-128.png",
@@ -27,8 +30,20 @@
       "matches": [
         "<all_urls>"
       ]
+    },
+    {
+      "js": ["newtab-inject.js"],
+      "matches": [
+        "safari-web-extension://*/*/home/index.html",
+        "chrome-extension://*/*/home/index.html",
+        "moz-extension://*/*/home/index.html"
+      ],
+      "run_at": "document_start"
     }
   ],
+  "background": {
+    "service_worker": "background.js"
+  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
@@ -43,13 +58,16 @@
   "permissions": [
     "activeTab",
     "nativeMessaging",
-    "storage"
+    "storage",
+    "tabs"
   ],
   "web_accessible_resources": [
     {
       "resources": [
         "images/icon.png",
-        "settings.html"
+        "settings.html",
+        "home/index.html",
+        "home/*"
       ],
       "matches": [
         "<all_urls>"
