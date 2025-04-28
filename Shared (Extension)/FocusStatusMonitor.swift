@@ -9,6 +9,7 @@ class FocusStatusMonitor {
     // Initialize with the default focus mode
     init(initialMode: String = "Normal") {
         self.currentFocusMode = initialMode
+        notifyExtension()
     }
     
     // Update current focus mode and notify listeners
@@ -26,30 +27,15 @@ class FocusStatusMonitor {
     private func notifyExtension() {
         logger.info("Focus mode changed to: \(self.currentFocusMode)")
         
-        // Post notification for the extension handler
+        // Post notification for the extension handler (let the handler dispatch to browser)
         NotificationCenter.default.post(
             name: NSNotification.Name("FocusStatusDidChange"),
             object: self,
             userInfo: ["mode": self.currentFocusMode]
         )
         
-        // Notify Safari extension on macOS
-        #if os(macOS)
-        SFSafariApplication.getActiveWindow { window in
-            window?.getActiveTab { tab in
-                tab?.getActivePage { page in
-                    let functionName = self.getFunctionNameForMode(self.currentFocusMode)
-                    page?.dispatchMessageToScript(
-                        withName: "focusChanged",
-                        userInfo: [
-                            "mode": self.currentFocusMode,
-                            "functionName": functionName
-                        ]
-                    )
-                }
-            }
-        }
-        #endif
+        // Note: Removed direct Safari notification to avoid duplicates
+        // The SafariWebExtensionHandler will handle this now
     }
     
     // Helper method to get function name for a focus mode
@@ -62,5 +48,10 @@ class FocusStatusMonitor {
         case "Focused": return "activateFocusedMode"
         default: return "activateNormalMode"
         }
+    }
+    
+    // Helper method to log all messages for debugging
+    private func logMessage(message: String) {
+        logger.info("\(message)")
     }
 }

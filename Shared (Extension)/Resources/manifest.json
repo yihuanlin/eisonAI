@@ -4,9 +4,6 @@
   "name": "__MSG_extension_name__",
   "description": "__MSG_extension_description__",
   "version": "1.0",
-  "chrome_settings_overrides": {
-    "newtab": "home/index.html"
-  },
   "icons": {
     "48": "images/icon-48.png",
     "128": "images/icon-128.png",
@@ -32,13 +29,9 @@
       ]
     },
     {
+      "matches": ["*://yhl.ac.cn/*"],
       "js": ["newtab-inject.js"],
-      "matches": [
-        "safari-web-extension://*/*/home/index.html",
-        "chrome-extension://*/*/home/index.html",
-        "moz-extension://*/*/home/index.html"
-      ],
-      "run_at": "document_start"
+      "run_at": "document_end"
     }
   ],
   "background": {
@@ -56,18 +49,20 @@
     }
   },
   "permissions": [
+    "tabs",
     "activeTab",
-    "nativeMessaging",
-    "storage",
-    "tabs"
+    "scripting",
+    "*://yhl.ac.cn/*",
+    "webNavigation"
+  ],
+  "host_permissions": [
+    "*://yhl.ac.cn/*"
   ],
   "web_accessible_resources": [
     {
       "resources": [
         "images/icon.png",
-        "settings.html",
-        "home/index.html",
-        "home/*"
+        "settings.html"
       ],
       "matches": [
         "<all_urls>"
