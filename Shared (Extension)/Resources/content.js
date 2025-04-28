@@ -1,8 +1,31 @@
-const MAX_TOKEN = 8000;
+const MAX_TOKEN = 1048576;
 let lastURL = "";
 let APP_MODE = "";
 let currentModel = "";
 let articleText = "";
+let focusMode = "";
+
+const currentURL = window.location.href;
+if (currentURL === "https://yhl.ac.cn/" || currentURL === "https://yhl.ac.cn" || currentURL.startsWith("https://yhl.ac.cn/?")) {
+  browser.runtime.sendMessage({
+    action: "checkFocusMode"
+  }).then(response => {
+    if (response && response.focusMode) {
+      focusMode = response.focusMode;
+      if (focusMode === "Do Not Disturb") {
+        executeInPageContext("resetMode", "none");
+      } else if (focusMode === "Gaming") {
+        executeInPageContext("resetMode", "hres");
+      } else if (focusMode === "Personal") {
+        executeInPageContext("resetMode", "hdr");
+      }
+    } else {
+      executeInPageContext("resetMode", "anime");
+    }
+  }).catch(error => {
+    console.error("Error checking focus mode:", error);
+  });
+}
 
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request) {
@@ -50,11 +73,17 @@ function getDebugText() {
 function ready() {
   (async () => {
     let bool = await setupGPT();
-
     if (bool) {
       insertHtml();
     }
   })();
+}
+
+function executeInPageContext(functionToExecute, parameter) {
+  const scriptTag = document.createElement('script');
+  scriptTag.textContent = `(${functionToExecute.toString()})(${JSON.stringify(parameter)});`;
+  document.documentElement.appendChild(scriptTag);
+  scriptTag.remove();
 }
 
 function insertHtml() {
@@ -79,7 +108,7 @@ function insertHtml() {
 
         <div id="ReadabilityKeyboard" class="ReadabilityStyle morePadding">
             <div class="readabilityInput fixMorePadding">
-                <textarea id="ReadabilityTextarea" placeholder="Reply (Enter for Send)" rows="1"
+                <textarea id="ReadabilityTextarea" placeholder="Reply" rows="1"
                     class="readabilityInsideStyle"></textarea>
 
                 <div id="ReadabilityClose" class="readabilityCursorPointer readabilityInsideStyle">
@@ -158,6 +187,14 @@ function insertHtml() {
   document
     .querySelector("#ReadabilityButton")
     .addEventListener("click", runSummary);
+
+  document.
+    addEventListener("keydown", function (event) {
+      if ((event.metaKey || event.ctrlKey) && event.key === 's') {
+        event.preventDefault();
+        runSummary();
+      }
+    });
 
   document
     .querySelector("#ReadabilityClose")
@@ -391,6 +428,7 @@ function runSummary() {
   document.querySelector("#ReadabilityBoxFrame").style.display = "flex";
   document.querySelector("#ReadabilityBar").style.display = "none";
   document.body.style.overflow = "hidden";
+  document.querySelector("#ReadabilityTextarea").focus();
   callGPT();
 }
 

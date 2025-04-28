@@ -40,10 +40,11 @@
       "72": "images/toolbar-icon-72.png"
     }
   },
+  "background": {
+    "service_worker": "background.js"
+  },
   "permissions": [
-    "activeTab",
-    "nativeMessaging",
-    "storage"
+    "nativeMessaging"
   ],
   "web_accessible_resources": [
     {
